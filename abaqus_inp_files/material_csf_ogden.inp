@@ -1,0 +1,5 @@
+*Material, name=CSF
+*Density
+1040.,
+*Hyperelastic, ogden, moduli=LONG TERM
+10.,    6., 4e-08

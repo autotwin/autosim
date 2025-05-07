@@ -1,0 +1,48 @@
+** STEP: Step-1
+** Define an explicit dynamic step with nonlinear geometry enabled.
+** 
+*Step, name=Step-1, nlgeom=YES
+** Enable nonlinear geometry (large deformation effects).
+*Dynamic, Explicit
+0.0, 0.08
+** Run this explicit step for 0.08 seconds total time.
+**
+*Bulk Viscosity
+0.06, 1.2
+** Add numerical bulk viscosity to suppress spurious high-frequency oscillations.
+** These are standard damping parameters for explicit simulations.
+** 
+** BOUNDARY CONDITIONS
+** Apply accelerations to the rigid reference node (REF).
+** AMP-2 holds DOFs 1–5 at zero; AMP-1 applies rotation about Z (DOF 6).
+** 
+** Name: Acc-BC-1 | Type: Acceleration on translational & rotational DOFs (except Z)
+*Boundary, amplitude=AMP-2, type=ACCELERATION
+REF, 1, 5, 1.
+** Apply acceleration (value 1.0 × AMP-2) to DOFs 1–5 of node set REF.
+** AMP-2 is typically constant 0.0, so this clamps DOFs 1–5 to zero.
+**
+** Name: Acc-BC-6 | Type: Rotational acceleration about Z
+*Boundary, amplitude=AMP-1, type=ACCELERATION
+REF, 6, 6, -1.
+** Apply acceleration (value -1.0 × AMP-1) to DOF 6 of REF (rotation about Z axis).
+** 
+** OUTPUT REQUESTS
+** 
+*Restart, write, number interval=1, time marks=NO
+** 
+** FIELD OUTPUT: F-Output-1
+** 
+*Output, field, time interval=0.001
+*Node Output
+A, U, V
+** 
+** FIELD OUTPUT: F-Output-2
+** 
+*Element Output, directions=YES
+LE, ER, S
+** 
+** HISTORY OUTPUT: H-Output-1
+** 
+*Output, history, variable=PRESELECT
+*End Step

@@ -1,0 +1,5 @@
+*Material, name=SKULL
+*Density
+2070.,
+*Elastic
+ 8e+09, 0.22

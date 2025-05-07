@@ -1,0 +1,32 @@
+*Assembly, name=Assembly
+** This defines the top-level model assembly block. All instances and constraints live here.
+**  
+*Instance, name=PART-1-1, part=PART-1
+** This creates an instance named PART-1-1 from the part called PART-1.
+** It brings the meshed part (defined elsewhere) into the global model.
+** Material assignments
+** Each *SOLID SECTION line maps an element set (EB1, EB2, EB3) to a material model.
+** These element sets are defined in the mesh file (mesh.inp), inside the part PART-1.
+*Solid Section, ELSET=EB1, MATERIAL=GRAYMATTER
+*Solid Section, ELSET=EB2, MATERIAL=CSF
+*Solid Section, ELSET=EB3, MATERIAL=SKULL
+*End Instance
+**  
+**
+*Node
+999999999, 0.0, 0.0, 0.0
+** This creates a single "manual" node at (0, 0, 0) with ID 999999999.
+** It's not part of the mesh — it's a reference node for assigning the constraint.
+**
+*Nset, nset=REF
+999999999,
+** This defines a node set called REF that contains the reference node 999999999.
+** This is used to apply constraints or boundary conditions to the rigid body.
+**
+*Rigid Body, ref node=REF, elset=PART-1-1.EB3
+** This defines a rigid body constraint:
+** - The reference node is REF (node 999999999).
+** - The element set EB3 (inside instance PART-1-1) is the rigid body domain.
+** All nodes in PART-1-1.EB3 will move rigidly, controlled by REF.
+**
+*End Assembly

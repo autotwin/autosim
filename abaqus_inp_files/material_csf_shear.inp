@@ -1,0 +1,7 @@
+*Material, name=CSF
+*Density
+1040.,
+*Eos, type=USUP
+1489., 1.79, 1.65
+*EOS SHEAR, Type=Viscous, Definition=Newtonian
+1e-2
