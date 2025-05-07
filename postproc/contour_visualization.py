@@ -13,6 +13,7 @@ import connectorBehavior
 from odbAccess import openOdb
 
 # === Set input path ===
+save_path = "simulation_results/example1/"
 odb_path = "simulation_results/example1/example1.odb"
 print "Opening ODB file:", odb_path
 
@@ -70,7 +71,7 @@ session.viewports['Viewport: 1'].odbDisplay.setFrame(step=0, frame=closest_index
 
 # === Define and save output
 odb_basename = odb_path.split('/')[-1].replace('.odb', '')
-output_filename = "%s_contour_%.0fms" % (odb_basename, closest_time * 1000)
+output_filename = save_path + "%s_contour_%.0fms" % (odb_basename, closest_time * 1000)
 print "Saving PNG to: %s.png" % output_filename
 
 session.printToFile(fileName=output_filename, format=PNG,

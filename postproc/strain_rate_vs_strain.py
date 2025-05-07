@@ -9,8 +9,9 @@ import os
 
 # === Set ODB path manually ===
 odb_path = "simulation_results/example1/example1.odb"
+save_path = "simulation_results/example1/"
 print "Opening ODB file:", odb_path
-odb_basename = os.path.splitext(os.path.basename(odb_path))[0]  # e.g., "example1"
+odb_basename  = os.path.splitext(os.path.basename(odb_path))[0]  # e.g., "example1"
 
 # === Open ODB and get step/frame ===
 odb = openOdb(odb_path)
@@ -45,7 +46,7 @@ LE_95_str = "%.3e" % LE_95
 ER_95_str = "%.3e" % ER_95
 
 # === Save strain + strain rate values to .txt ===
-output_txt = odb_basename + '_strain_vs_strainrate_at_%.0fms.txt' % (actual_time * 1000)
+output_txt = save_path + odb_basename  + '_strain_vs_strainrate_at_%.0fms.txt' % (actual_time * 1000)
 np.savetxt(output_txt, np.column_stack((LE_values, ER_values)),
            header='Strain\tStrainRate', fmt='%.6e')
 print "Saved strain/strain rate data to:", output_txt
@@ -61,7 +62,7 @@ plt.title('Strain Rate vs Strain at t = %.3f s' % actual_time)
 plt.grid(True)
 plt.legend()
 plt.tight_layout()
-scatter_file = odb_basename + '_scatter_strainrate_vs_strain_%.0fms.png' % (actual_time * 1000)
+scatter_file = save_path + odb_basename + '_scatter_strainrate_vs_strain_%.0fms.png' % (actual_time * 1000)
 plt.savefig(scatter_file, dpi=150)
 print "Saved:", scatter_file
 
@@ -74,7 +75,7 @@ plt.ylabel('Count')
 plt.title('Histogram of Strain at t = %.3f s' % actual_time)
 plt.legend()
 plt.tight_layout()
-hist_strain_file = odb_basename + '_histogram_strain_%.0fms.png' % (actual_time * 1000)
+hist_strain_file = save_path +  odb_basename + '_histogram_strain_%.0fms.png' % (actual_time * 1000)
 plt.savefig(hist_strain_file, dpi=150)
 print "Saved:", hist_strain_file
 
@@ -87,7 +88,7 @@ plt.ylabel('Count')
 plt.title('Histogram of Strain Rate at t = %.3f s' % actual_time)
 plt.legend()
 plt.tight_layout()
-hist_rate_file = odb_basename + '_histogram_strainrate_%.0fms.png' % (actual_time * 1000)
+hist_rate_file = save_path +  odb_basename + '_histogram_strainrate_%.0fms.png' % (actual_time * 1000)
 plt.savefig(hist_rate_file, dpi=150)
 print "Saved:", hist_rate_file
 
