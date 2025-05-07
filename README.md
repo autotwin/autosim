@@ -26,9 +26,8 @@ qsub run_abaqus_simulation_main_postproc.sh
 ```
 
 This script:
-- Reads the `.odb` file from the simulation output folder
-- Extracts max principal strain and strain rate
-- Generates:
+- Run `postproc/contour_visualization.py` to read the `.odb` file and produce a contour plot
+- Run `postproc/strain_rate_vs_strain.py` to read the `.odb` file, extracts max principal strain and strain rate, and generate:
   - A scatter plot (strain rate vs. strain)
   - Histograms of strain and strain rate
   - A `.txt` file with raw element-wise data
