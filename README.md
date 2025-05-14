@@ -2,6 +2,8 @@
 
 This repository contains scripts and input files to run a finite element simulation of brain mechanics using Abaqus/Explicit, and postprocess the output. This repo and this README are both a work in progress. Immediate next steps involve full automation of the simulation + post processing pipeline.
 
+> Note: See also the [SSM](ssm.md) simulation parallel path.
+
 ## Running the Simulation
 
 To submit an Abaqus simulation to the cluster via SGE (`qsub`), run:
