@@ -11,37 +11,54 @@ python ~/automesh/autowin/ssm/center_of_geometry.py \
 
 import argparse
 from pathlib import Path
+from typing import List, NamedTuple
 
 import numpy as np
 
 
-def center_of_geometry(
-    segmentation: np.ndarray, ignore_ids: list[int] | None
-) -> np.ndarray:
+class CliTuple(NamedTuple):
+    """Command line interface structure."""
+
+    input_file: Path
+    remove: List[int] | None
+
+
+class SegWithRemoveIDs(NamedTuple):
+    """Valid segmentation and valid remove IDs structure."""
+
+    segmentation: np.ndarray
+    remove: List[int]  # a list of non-negative integers, possibly empty
+
+
+def center_of_geometry(xx: SegWithRemoveIDs) -> np.ndarray:
     """Calculate the center of geometry of a segmented assembly.
 
     Args:
         segmentation (numpy.ndarray): The segmentation array.
-        ignore_ids (list, optional): List of segmentation IDs to ignore.
+        ignore_ids (list): List of segmentation IDs to ignore, possibly
+            and empty list for cases where all IDs are valid.
 
     Returns:
         numpy.ndarray: The center of geometry coordinates.
     """
-    if ignore_ids is None:
-        ignore_ids = []
-
     # Get the unique IDs in the segmentation
-    unique_ids = np.unique(segmentation)
+    breakpoint()
+    unique_ids = np.unique(xx.segmentation)
 
-    # Filter out the ignored IDs
-    valid_ids = [ii for ii in unique_ids if ii not in ignore_ids]
+    # Filter out the removed IDs
+    included_ids = [ii for ii in unique_ids if ii not in xx.remove]
 
     # Get the coordinates of the valid IDs
-    indices = np.argwhere(np.isin(segmentation, valid_ids))
+    indices = np.argwhere(np.isin(xx.segmentation, included_ids))
 
     # Calculate the center of geometry
     if indices.size == 0:
-        raise ValueError("No valid IDs found in the segmentation.")
+        msg = "Segmentation does not include valid IDs."
+        msg += f" Valid IDs: {included_ids}, remove IDs: {xx.remove}"
+        raise ValueError(msg)
+
+    # Get the coordinates of the valid IDs
+    indices = np.argwhere(np.isin(xx.segmentation, included_ids))
 
     # Account for the offset of the indices
     # which is +0.5 in each of the (x, y, z) directions
@@ -50,6 +67,69 @@ def center_of_geometry(
     cog = np.mean(indices_offset, axis=0)
 
     return cog
+
+
+def segmentation_and_remove_ids(xx: CliTuple) -> SegWithRemoveIDs:
+    """Load the segmentation and ignore IDs from the command line
+    interface.
+
+    Args:
+        xx: The command line interface
+            structure.
+
+    Returns:
+        SegWithRemoveIDs: The segmentation and ignore IDs structure.
+    """
+
+    # Load the segmentation
+    segmentation = np.load(xx.input_file)
+
+    # Get the ignore IDs
+    remove = xx.remove
+
+    if remove is None:
+        remove = []  # overwrite with empty list
+
+    return SegWithRemoveIDs(segmentation=segmentation, remove=remove)
+
+
+def cli(input_file: Path, remove: list[int]) -> CliTuple:
+    """Convert command line arguments to a command line interface structure.
+
+    Args:
+        input_file (Path): The path to the segmentation file.
+        remove (list[int]): List of non-negative segmentation IDs to ignore.
+
+    Returns:
+        CliTuple: An instance of the Cli NamedTuple containing the input
+        file and remove IDs.
+
+    Raises:
+        FileNotFoundError: If the input file does not exist.
+        ValueError: If the input file is not a .npy file or if remove IDs are invalid.
+    """
+
+    # Input file must exist
+    if not input_file.is_file():
+        raise FileNotFoundError(f"File {input_file} not found.")
+
+    # Input must be a .npy file
+    if input_file.suffix != ".npy":
+        raise ValueError(f"File {input_file} must be a .npy file.")
+
+    # Remove IDs must be integers
+    if remove and not all(isinstance(i, int) for i in remove):
+        raise ValueError("Remove IDs must be integers.")
+
+    # Remove IDs must be non-negative integers
+    if remove and not all(i >= 0 for i in remove):
+        raise ValueError("Remove IDs must be non-negative.")
+
+    # Create the cli structure
+    yy = CliTuple(input_file=input_file, remove=remove)
+
+    # Return the structure
+    return yy
 
 
 if __name__ == "__main__":
@@ -76,23 +156,14 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    # Check if the input file exists
-    input_path = Path(args.input)
-    breakpoint()
-    if not input_path.is_file():
-        raise FileNotFoundError(f"Input file {args.input} does not exist.")
+    aa = cli(
+        input_file=Path(args.input),
+        remove=args.remove,
+    )
 
-    # Check if the input file is a .npy file
-    if input_path.suffix != ".npy":
-        raise ValueError("Input file must be a .npy file.")
-
-    # Check if the remove IDs are valid
-    if args.remove and not all(isinstance(i, int) for i in args.remove):
-        raise ValueError("Remove IDs must be integers.")
-
-    # Load the segmentation
-    data = np.load(input_path)
+    bb = segmentation_and_remove_ids(aa)
 
     # Calculate the center of geometry
-    center_of_geometry = center_of_geometry(data, args.remove)
+    center_of_geometry = center_of_geometry(bb)
+
     print(f"Center of Geometry: {center_of_geometry}")
