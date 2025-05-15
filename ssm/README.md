@@ -26,6 +26,7 @@ step in the workflow.
   * Non-Automated Repair
   * Not extensible for three or more materials
     * Sliver elements
+  * Closed-source (Sculpt)
 
 ## Current: Segmentation
 
@@ -58,7 +59,7 @@ step in the workflow.
     * Complicates SSM input deck (suppress block commands)
   * No hierarchical smoothing
   * No Taubin smoothing (only Laplace smoothing)
-    * Laplace smoothing is not not volume-preserving (isochoric)
+    * Laplace smoothing is not volume-preserving (isochoric)
 
 ## Next Point: Mesh via `autotwin`
 
