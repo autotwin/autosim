@@ -16,6 +16,7 @@ from center_of_geometry import (
     cli,
     CliTuple,
     segmentation_and_remove_ids,
+    SegWithRemoveIDs,
 )
 
 
@@ -98,6 +99,31 @@ def test_cli_valid_input(segmentation_file_fixture):
     ), f"Expected {remove_ids}, got {cli_instance.remove}"
 
 
+def test_cli_with_no_remove_ids(segmentation_file_fixture):
+    """Tests the CLI function with no remove IDs."""
+    remove_ids = None
+
+    # Call the CLI function
+    cli_instance = CliTuple(segmentation_file_fixture, remove=remove_ids)
+
+    yy = segmentation_and_remove_ids(cli_instance)
+
+    assert isinstance(yy, SegWithRemoveIDs)
+    assert yy.remove == []
+
+
+def test_remove_all_ids(segmentation_file_fixture):
+    """Tests that a ValueError is raised when all IDs are removed."""
+    # Call the CLI function with all IDs removed
+    remove_ids = [0, 11]
+    with pytest.raises(ValueError):
+        center_of_geometry(
+            segmentation_and_remove_ids(
+                CliTuple(segmentation_file_fixture, remove=remove_ids)
+            )
+        )
+
+
 def test_fill_volume_1(segmentation_file_fixture):
     """Test the center_of_geometry function with known data from the
     void fill (ID=0) of letter_f.npy."""
@@ -105,7 +131,6 @@ def test_fill_volume_1(segmentation_file_fixture):
     # define the expected center of geometry
     EXPECTED_COG: Final[np.ndarray] = np.array([2.071429, 1.928571, 0.5])
 
-    breakpoint()
     # call the center_of_geometry function
     cog = center_of_geometry(
         segmentation_and_remove_ids(

@@ -4,8 +4,8 @@ IDs to be ignored.
 
 To run:
 source ~/automesh/autotwin/.venv/bin/activate
-python ~/automesh/autowin/ssm/center_of_geometry.py \
-    -i ~/automesh/autotwin/ssm/segmentation.npy \
+python ~/automesh/autosim/ssm/center_of_geometry.py \
+    -i ~/automesh/autosim/ssm/letter_f.npy \
     -r 0 1 2
 """
 
@@ -42,7 +42,6 @@ def center_of_geometry(xx: SegWithRemoveIDs) -> np.ndarray:
         numpy.ndarray: The center of geometry coordinates.
     """
     # Get the unique IDs in the segmentation
-    breakpoint()
     unique_ids = np.unique(xx.segmentation)
 
     # Filter out the removed IDs
