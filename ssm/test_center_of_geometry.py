@@ -2,6 +2,7 @@
 from the letter_f.npy unit test of automesh."""
 
 from pathlib import Path
+from typing import Final
 
 import numpy as np
 import pytest
@@ -16,7 +17,9 @@ def load_segmentation():
 
     # Check if the file exists
     if not segmentation_file.is_file():
-        raise FileNotFoundError(f"Segmentation file {segmentation_file} not found.")
+        raise FileNotFoundError(
+            f"Segmentation file {segmentation_file} not found."
+        )
 
     # Load the segmentation data
     segmentation = np.load(segmentation_file)
@@ -28,14 +31,14 @@ def test_fill_volume_1(load_segmentation):
     void fill (ID=0) of letter_f.npy."""
 
     # define the expected center of geometry
-    expected_cog = np.array([2.071429, 1.928571, 0.5])
+    EXPECTED_COG: Final[np.ndarray] = np.array([2.071429, 1.928571, 0.5])
 
     # call the center_of_geometry function
     cog = center_of_geometry(load_segmentation, ignore_ids=[11])
 
     # check if the calculated cog matches the expected cog
-    msg = f"expected {expected_cog}, got {cog}"
-    assert np.allclose(cog, expected_cog), msg
+    msg = f"expected {EXPECTED_COG}, got {cog}"
+    assert np.allclose(cog, EXPECTED_COG), msg
 
 
 def test_material_volume_2(load_segmentation):
@@ -43,25 +46,25 @@ def test_material_volume_2(load_segmentation):
     material (ID=11) of letter_f.npy."""
 
     # define the expected center of geometry
-    expected_cog = np.array([1.0, 3.0, 0.5])
+    EXPECTED_COG: Final[np.ndarray] = np.array([1.0, 3.0, 0.5])
 
     # call the center_of_geometry function
     cog = center_of_geometry(load_segmentation, ignore_ids=[0])
 
     # check if the calculated cog matches the expected cog
-    msg = f"expected {expected_cog}, got {cog}"
-    assert np.allclose(cog, expected_cog), msg
+    msg = f"expected {EXPECTED_COG}, got {cog}"
+    assert np.allclose(cog, EXPECTED_COG), msg
 
 
 def test_center_assembly(load_segmentation):
     """test the center_of_geometry function with known data."""
 
     # define the expected center of geometry
-    expected_cog = np.array([1.5, 2.5, 0.5])
+    EXPECTED_COG: Final[np.ndarray] = np.array([1.5, 2.5, 0.5])
 
     # call the center_of_geometry function
     cog = center_of_geometry(load_segmentation, ignore_ids=[])
 
     # check if the calculated cog matches the expected cog
-    msg = f"expected {expected_cog}, got {cog}"
-    assert np.allclose(cog, expected_cog), msg
+    msg = f"expected {EXPECTED_COG}, got {cog}"
+    assert np.allclose(cog, EXPECTED_COG), msg
