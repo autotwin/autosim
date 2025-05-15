@@ -16,7 +16,7 @@ from center_of_geometry import (
     cli,
     CliTuple,
     segmentation_and_remove_ids,
-    SegWithRemoveIDs,
+    SegAndRemoveIDs,
 )
 
 
@@ -108,7 +108,7 @@ def test_cli_with_no_remove_ids(segmentation_file_fixture):
 
     yy = segmentation_and_remove_ids(cli_instance)
 
-    assert isinstance(yy, SegWithRemoveIDs)
+    assert isinstance(yy, SegAndRemoveIDs)
     assert yy.remove == []
 
 
@@ -143,30 +143,38 @@ def test_fill_volume_1(segmentation_file_fixture):
     assert np.allclose(cog, EXPECTED_COG), msg
 
 
-# def test_material_volume_2(load_segmentation):
-#     """Test the center_of_geometry function with known data from the
-#     material (ID=11) of letter_f.npy."""
+def test_material_volume_2(segmentation_file_fixture):
+    """Test the center_of_geometry function with known data from the
+    material (ID=11) of letter_f.npy."""
 
-#     # define the expected center of geometry
-#     EXPECTED_COG: Final[np.ndarray] = np.array([1.0, 3.0, 0.5])
+    # define the expected center of geometry
+    EXPECTED_COG: Final[np.ndarray] = np.array([1.0, 3.0, 0.5])
 
-#     # call the center_of_geometry function
-#     cog = center_of_geometry(load_segmentation, ignore_ids=[0])
+    # call the center_of_geometry function
+    cog = center_of_geometry(
+        segmentation_and_remove_ids(
+            CliTuple(segmentation_file_fixture, remove=[0])
+        )
+    )
 
-#     # check if the calculated cog matches the expected cog
-#     msg = f"expected {EXPECTED_COG}, got {cog}"
-#     assert np.allclose(cog, EXPECTED_COG), msg
+    # check if the calculated cog matches the expected cog
+    msg = f"expected {EXPECTED_COG}, got {cog}"
+    assert np.allclose(cog, EXPECTED_COG), msg
 
 
-# def test_center_assembly(load_segmentation):
-#     """test the center_of_geometry function with known data."""
+def test_center_assembly(segmentation_file_fixture):
+    """test the center_of_geometry function with known data."""
 
-#     # define the expected center of geometry
-#     EXPECTED_COG: Final[np.ndarray] = np.array([1.5, 2.5, 0.5])
+    # define the expected center of geometry
+    EXPECTED_COG: Final[np.ndarray] = np.array([1.5, 2.5, 0.5])
 
-#     # call the center_of_geometry function
-#     cog = center_of_geometry(load_segmentation, ignore_ids=[])
+    # call the center_of_geometry function
+    cog = center_of_geometry(
+        segmentation_and_remove_ids(
+            CliTuple(segmentation_file_fixture, remove=[])
+        )
+    )
 
-#     # check if the calculated cog matches the expected cog
-#     msg = f"expected {EXPECTED_COG}, got {cog}"
-#     assert np.allclose(cog, EXPECTED_COG), msg
+    # check if the calculated cog matches the expected cog
+    msg = f"expected {EXPECTED_COG}, got {cog}"
+    assert np.allclose(cog, EXPECTED_COG), msg

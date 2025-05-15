@@ -23,14 +23,14 @@ class CliTuple(NamedTuple):
     remove: List[int] | None
 
 
-class SegWithRemoveIDs(NamedTuple):
+class SegAndRemoveIDs(NamedTuple):
     """Valid segmentation and valid remove IDs structure."""
 
     segmentation: np.ndarray
     remove: List[int]  # a list of non-negative integers, possibly empty
 
 
-def center_of_geometry(xx: SegWithRemoveIDs) -> np.ndarray:
+def center_of_geometry(xx: SegAndRemoveIDs) -> np.ndarray:
     """Calculate the center of geometry of a segmented assembly.
 
     Args:
@@ -68,7 +68,7 @@ def center_of_geometry(xx: SegWithRemoveIDs) -> np.ndarray:
     return cog
 
 
-def segmentation_and_remove_ids(xx: CliTuple) -> SegWithRemoveIDs:
+def segmentation_and_remove_ids(xx: CliTuple) -> SegAndRemoveIDs:
     """Load the segmentation and ignore IDs from the command line
     interface.
 
@@ -89,7 +89,7 @@ def segmentation_and_remove_ids(xx: CliTuple) -> SegWithRemoveIDs:
     if remove is None:
         remove = []  # overwrite with empty list
 
-    return SegWithRemoveIDs(segmentation=segmentation, remove=remove)
+    return SegAndRemoveIDs(segmentation=segmentation, remove=remove)
 
 
 def cli(input_file: Path, remove: list[int]) -> CliTuple:
@@ -159,10 +159,7 @@ if __name__ == "__main__":
         input_file=Path(args.input),
         remove=args.remove,
     )
-
     bb = segmentation_and_remove_ids(aa)
-
     # Calculate the center of geometry
     center_of_geometry = center_of_geometry(bb)
-
     print(f"Center of Geometry: {center_of_geometry}")
