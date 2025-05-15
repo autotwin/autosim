@@ -72,12 +72,69 @@ for processing, downloading it to the local `~/scratch/ixi` folder.
 
 We determine the geometric center of the assembly.
 
-```python
+Using a Test Driven Design (TDD) approach, we create a unit test,
+[`test_center_of_gravity.py`](test_center_of_geometry.py), using the
+[`letter_f`](https://autotwin.github.io/automesh/examples/unit_tests/index.html#letter-f)
+example:
 
+```sh
+cp ~/autotwin/automesh/tests/input/letter_f.spn ~/autotwin/autosim/ssm/.
+am convert segmentation -i letter_f.spn -o letter_f.npy -x 3 -y 5 -z 1
+am mesh hex -i letter_f.npy -o letter_f.inp
 ```
+
+The `letter_f.npy` has the form:
+
+```python
+array([[[11],
+        [11],
+        [11],
+        [11],
+        [11]],
+
+       [[ 0],
+        [ 0],
+        [11],
+        [ 0],
+        [11]],
+
+       [[ 0],
+        [ 0],
+        [ 0],
+        [ 0],
+        [11]]], dtype=uint8)
+```
+
+because NumPy saves this array in `(z, y, x)` order.
+
+Visualize `letter_f.inp` in Cubit:
+
+![](../fig/letter_f_in_cubit.png)
+
+where
+
+* green is `Volume 1` with center of geometry
+  * `x = 2.071429`
+  * `y = 1.928571`
+  * `z = 0.500000`
+* yellow is `Volume 2` with center of geometry
+  * `x = 1.000000`
+  * `y = 3.000000`
+  * `z = 0.500000`
+* the assembly (`Volume 1` + `Volume 2`) has center of geometry
+  * `x = 1.500000`
+  * `y = 2.500000`
+  * `z = 0.500000`
+
+We will use these above-shown values as a fiducial for tests to develop
+[`center_of_geometry.py`](center_of_geometry.py).
 
 The geometric center for each segmentation file is used as the offset value
 for the `autotwin mesh hex` command.
+
+```sh
+automesh mesh hex ... (to come)
+```
 
 ## Next Point: Simulation
 
