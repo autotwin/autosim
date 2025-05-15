@@ -1,10 +1,9 @@
 """This module tests the center_of_geometry function with known data
 from the letter_f.npy unit test of automesh."""
 
-import subprocess
-import numpy as np
-
 from pathlib import Path
+
+import numpy as np
 import pytest
 
 from center_of_geometry import center_of_geometry
@@ -66,4 +65,3 @@ def test_center_assembly(load_segmentation):
     # check if the calculated cog matches the expected cog
     msg = f"expected {expected_cog}, got {cog}"
     assert np.allclose(cog, expected_cog), msg
-
