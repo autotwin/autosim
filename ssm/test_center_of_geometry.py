@@ -91,12 +91,12 @@ def test_cli_valid_input(segmentation_file_fixture):
 
     msg = "Instance is not of type CliTuple."
     assert isinstance(cli_instance, CliTuple), msg
-    assert (
-        cli_instance.input_file == segmentation_file
-    ), f"Expected {segmentation_file}, got {cli_instance.input_file}"
-    assert (
-        cli_instance.remove == remove_ids
-    ), f"Expected {remove_ids}, got {cli_instance.remove}"
+    assert cli_instance.input_file == segmentation_file, (
+        f"Expected {segmentation_file}, got {cli_instance.input_file}"
+    )
+    assert cli_instance.remove == remove_ids, (
+        f"Expected {remove_ids}, got {cli_instance.remove}"
+    )
 
 
 def test_cli_with_no_remove_ids(segmentation_file_fixture):

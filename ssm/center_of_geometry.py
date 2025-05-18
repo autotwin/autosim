@@ -132,7 +132,6 @@ def cli(input_file: Path, remove: list[int]) -> CliTuple:
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser(
         description="Calculate the center of geometry of a segmented assembly."
     )
@@ -155,11 +154,11 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    aa = cli(
+    aa: CliTuple = cli(
         input_file=Path(args.input),
         remove=args.remove,
     )
-    bb = segmentation_and_remove_ids(aa)
+    bb: SegAndRemoveIDs = segmentation_and_remove_ids(aa)
     # Calculate the center of geometry
-    center_of_geometry = center_of_geometry(bb)
-    print(f"Center of Geometry: {center_of_geometry}")
+    cc: np.ndarray = center_of_geometry(bb)
+    print(f"Center of Geometry: {cc}")
