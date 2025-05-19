@@ -3,10 +3,16 @@ of geometry of the segmented assembly, allowing for certain segmentation
 IDs to be ignored.
 
 To run:
-source ~/automesh/autotwin/.venv/bin/activate
+source ~/automesh/autosim/.venv/bin/activate
 python ~/automesh/autosim/ssm/center_of_geometry.py \
     -i ~/automesh/autosim/ssm/letter_f.npy \
-    -r 0 1 2
+    -r 0
+
+To test:
+pytest --cov --cov-report=term-missing
+
+References:
+https://autotwin.github.io/automesh/examples/unit_tests/index.html#letter-f
 """
 
 import argparse
@@ -16,21 +22,22 @@ from typing import List, NamedTuple
 import numpy as np
 
 
-class CliTuple(NamedTuple):
-    """Command line interface structure."""
+class CliCommand(NamedTuple):
+    """A full command line with arguments, equilvalent to what the user would
+    enter in the command line."""
 
     input_file: Path
     remove: List[int] | None
 
 
-class SegAndRemoveIDs(NamedTuple):
+class Segmentation(NamedTuple):
     """Valid segmentation and valid remove IDs structure."""
 
     segmentation: np.ndarray
     remove: List[int]  # a list of non-negative integers, possibly empty
 
 
-def center_of_geometry(xx: SegAndRemoveIDs) -> np.ndarray:
+def center_of_geometry(xx: Segmentation) -> np.ndarray:
     """Calculate the center of geometry of a segmented assembly.
 
     Args:
@@ -68,7 +75,7 @@ def center_of_geometry(xx: SegAndRemoveIDs) -> np.ndarray:
     return cog
 
 
-def segmentation_and_remove_ids(xx: CliTuple) -> SegAndRemoveIDs:
+def segmentation_and_remove_ids(xx: CliCommand) -> Segmentation:
     """Load the segmentation and ignore IDs from the command line
     interface.
 
@@ -89,10 +96,10 @@ def segmentation_and_remove_ids(xx: CliTuple) -> SegAndRemoveIDs:
     if remove is None:
         remove = []  # overwrite with empty list
 
-    return SegAndRemoveIDs(segmentation=segmentation, remove=remove)
+    return Segmentation(segmentation=segmentation, remove=remove)
 
 
-def cli(input_file: Path, remove: list[int]) -> CliTuple:
+def cli(input_file: Path, remove: list[int]) -> CliCommand:
     """Convert command line arguments to a command line interface structure.
 
     Args:
@@ -100,12 +107,12 @@ def cli(input_file: Path, remove: list[int]) -> CliTuple:
         remove (list[int]): List of non-negative segmentation IDs to ignore.
 
     Returns:
-        CliTuple: An instance of the Cli NamedTuple containing the input
-        file and remove IDs.
+        An instance of the CliCommand NamedTuple.
 
     Raises:
         FileNotFoundError: If the input file does not exist.
-        ValueError: If the input file is not a .npy file or if remove IDs are invalid.
+        ValueError: If the input file is not a .npy file or if remove IDs
+            are invalid.
     """
 
     # Input file must exist
@@ -125,7 +132,7 @@ def cli(input_file: Path, remove: list[int]) -> CliTuple:
         raise ValueError("Remove IDs must be non-negative.")
 
     # Create the cli structure
-    yy = CliTuple(input_file=input_file, remove=remove)
+    yy = CliCommand(input_file=input_file, remove=remove)
 
     # Return the structure
     return yy
@@ -154,11 +161,11 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    aa: CliTuple = cli(
+    aa: CliCommand = cli(
         input_file=Path(args.input),
         remove=args.remove,
     )
-    bb: SegAndRemoveIDs = segmentation_and_remove_ids(aa)
+    bb: Segmentation = segmentation_and_remove_ids(aa)
     # Calculate the center of geometry
     cc: np.ndarray = center_of_geometry(bb)
     print(f"Center of Geometry: {cc}")

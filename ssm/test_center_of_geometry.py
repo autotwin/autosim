@@ -2,6 +2,7 @@
 from the letter_f.npy unit test of automesh.
 
 To run:
+pytest
 pytest --cov=center_of_geometry --cov-report=term-missing test_center_of_geometry.py -v
 """
 
@@ -14,26 +15,10 @@ import pytest
 from center_of_geometry import (
     center_of_geometry,
     cli,
-    CliTuple,
+    CliCommand,
     segmentation_and_remove_ids,
-    SegAndRemoveIDs,
+    Segmentation,
 )
-
-
-# @pytest.fixture(scope="module", autouse=True)
-# def load_segmentation():
-#    """Fixture to load the segmentation data from letter_f.npy"""
-#    segmentation_file = Path(__file__).parent / "letter_f.npy"
-#
-#    # Check if the file exists
-#    if not segmentation_file.is_file():
-#        raise FileNotFoundError(
-#            f"Segmentation file {segmentation_file} not found."
-#        )
-#
-#    # Load the segmentation data
-#    segmentation = np.load(segmentation_file)
-#    return segmentation
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -89,8 +74,8 @@ def test_cli_valid_input(segmentation_file_fixture):
     # Call the CLI function
     cli_instance = cli(segmentation_file_fixture, remove=remove_ids)
 
-    msg = "Instance is not of type CliTuple."
-    assert isinstance(cli_instance, CliTuple), msg
+    msg = "Instance is not of type CliCommand."
+    assert isinstance(cli_instance, CliCommand), msg
     assert cli_instance.input_file == segmentation_file, (
         f"Expected {segmentation_file}, got {cli_instance.input_file}"
     )
@@ -104,11 +89,11 @@ def test_cli_with_no_remove_ids(segmentation_file_fixture):
     remove_ids = None
 
     # Call the CLI function
-    cli_instance = CliTuple(segmentation_file_fixture, remove=remove_ids)
+    cli_instance = CliCommand(segmentation_file_fixture, remove=remove_ids)
 
     yy = segmentation_and_remove_ids(cli_instance)
 
-    assert isinstance(yy, SegAndRemoveIDs)
+    assert isinstance(yy, Segmentation)
     assert yy.remove == []
 
 
@@ -119,7 +104,7 @@ def test_remove_all_ids(segmentation_file_fixture):
     with pytest.raises(ValueError):
         center_of_geometry(
             segmentation_and_remove_ids(
-                CliTuple(segmentation_file_fixture, remove=remove_ids)
+                CliCommand(segmentation_file_fixture, remove=remove_ids)
             )
         )
 
@@ -134,7 +119,7 @@ def test_fill_volume_1(segmentation_file_fixture):
     # call the center_of_geometry function
     cog = center_of_geometry(
         segmentation_and_remove_ids(
-            CliTuple(segmentation_file_fixture, remove=[11])
+            CliCommand(segmentation_file_fixture, remove=[11])
         )
     )
 
@@ -153,7 +138,7 @@ def test_material_volume_2(segmentation_file_fixture):
     # call the center_of_geometry function
     cog = center_of_geometry(
         segmentation_and_remove_ids(
-            CliTuple(segmentation_file_fixture, remove=[0])
+            CliCommand(segmentation_file_fixture, remove=[0])
         )
     )
 
@@ -171,7 +156,7 @@ def test_center_assembly(segmentation_file_fixture):
     # call the center_of_geometry function
     cog = center_of_geometry(
         segmentation_and_remove_ids(
-            CliTuple(segmentation_file_fixture, remove=[])
+            CliCommand(segmentation_file_fixture, remove=[])
         )
     )
 
