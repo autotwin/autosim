@@ -49,11 +49,16 @@ RESOLUTION: Final[dict] = {
     "large": 150.0 / 20.0,  # voxel/cm
 }
 LENGTH_SCALE: Final[str] = "mm"  # mm, cm, m
+METRICS: Final[bool] = True  # Calculate metrics
+# METRICS: Final[bool] = False  # Calculate metrics
 SCALING: Final[dict] = {
     "mm": 10.0,  # mm/cm
     "cm": 1.0,  # cm/cm
     "m": 0.01,  # m/cm
 }
+SMOOTHING: Final[bool] = True  # Smooth the mesh
+# SMOOTHING: Final[bool] = False  # Smooth the mesh
+SMOOTHING_ITERATIONS: Final[int] = 8  # Number of smoothing iterations
 TEST = False  # Perform a consistency validation against known data
 # TEST = True  # Perform a consistency validation against known data
 # ----------------
@@ -150,6 +155,10 @@ for npy_file in npy_files:
     else:
         scale = 1.0
 
+    if METRICS:
+        output_file_csv = NPY_OUTPUT.joinpath(npy_file.stem + ".csv")
+        command += ["--metrics", str(output_file_csv)]
+
     print(f"  Scale used for automesh: {scale} {LENGTH_SCALE}/voxel")
     sk = ["--xscale", "--yscale", "--zscale"]  # scale strings
     sv = [str(scale) for _ in sk]  # scale values
@@ -160,6 +169,14 @@ for npy_file in npy_files:
     tv = [str(-1.0 * scale * item) for item in cc]  # translate values
     tt = [item for pair in zip(tk, tv) for item in pair]  # translate list
     command += tt
+
+    if SMOOTHING:
+        command += [
+            "smooth",
+            "--hierarchical",
+            "--iterations",
+            str(SMOOTHING_ITERATIONS),
+        ]
 
     print("Command:")
     print(" ".join(command))
@@ -193,3 +210,4 @@ print(f"Processed {n_files} files in {delta_t:.6f} seconds")
 # graphics clip on
 # graphics clip on location 7.55 9.25 7.75 direction -1 0 0 # center point of the domain in a001.log
 # graphics clip manipulation off
+# block 1 visibility off
