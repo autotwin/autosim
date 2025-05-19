@@ -133,9 +133,13 @@ We will use these above-shown values as a fiducial for tests to develop
 The geometric center for each segmentation file is used as the offset value
 for the `autotwin mesh hex` command.
 
-```sh
-automesh mesh hex ... (to come)
-```
+The meshes are made with [`segmentation_to_mesh.py`](segmentation_to_mesh.py).
+
+Below are three meshes, translated to their center, but not scaled (thus length units are in voxels), created with `segmentation_to_mesh.py`:
+
+`IXI012-HH-1211-T1_small.png` | `IXI012-HH-1211-T1_medium.png` | `IXI012-HH-1211-T1_large.png`
+:---: | :---: | :---:
+![](fig/IXI012-HH-1211-T1_small.png) | ![](fig/IXI012-HH-1211-T1_medium.png) | ![](fig/IXI012-HH-1211-T1_large.png)
 
 ## Next Point: Simulation
 

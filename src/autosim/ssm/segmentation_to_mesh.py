@@ -31,6 +31,8 @@ from center_of_geometry import (
 AUTOMESH: Final[Path] = Path(
     "~/autotwin/automesh/target/release/automesh"
 ).expanduser()
+# MESH_OUTPUT_TYPE = ".inp"
+MESH_OUTPUT_TYPE = ".exo"
 MM_TO_M: Final[float] = 1e-3  # Convert mm to m
 NPY_INPUT: Final[Path] = Path("~/scratch/ixi/input/").expanduser()
 NPY_OUTPUT: Final[Path] = Path("~/scratch/ixi/output/").expanduser()
@@ -89,12 +91,13 @@ if not npy_files:
 
 for npy_file in npy_files:
     aa: CliCommand = cli(input_file=npy_file, remove=IGNORE_IDS)
-
     bb: Segmentation = segmentation_and_remove_ids(aa)
-
     cc: np.ndarray = center_of_geometry(bb)
 
-    output_file = NPY_OUTPUT.joinpath(npy_file.stem + ".inp")
+    print(f"Processing: {npy_file}")
+    print(f"  Center of Geometry: {cc} voxels")
+
+    output_file = NPY_OUTPUT.joinpath(npy_file.stem + MESH_OUTPUT_TYPE)
 
     command = [
         str(AUTOMESH),
@@ -107,7 +110,13 @@ for npy_file in npy_files:
     ] 
     command += REMOVES
 
-    print(f"Command: {command}")
+    ts = ["--xtranslate", "--ytranslate", "--ztranslate"]  # translate strings
+    tv = [str(-1.0 * item) for item in cc]  # translate values
+    tt = [item for pair in zip(ts, tv) for item in pair]  # translate list
+    command += tt
+
+    print("Command:")
+    print(" ".join(command))
 
     result = subprocess.run(command, capture_output=True, text=True)
 
@@ -117,13 +126,12 @@ for npy_file in npy_files:
         print("automesh command failed:")
         print(result.stderr)  # error message
 
-    print(f"Processed file: {npy_file}")
-    print(f"  Center of Geometry: {cc}")
 
 
 end_time = time.time()
 delta_t = end_time - start_time
 n_files = len(npy_files)
+print("Done.")
 print(f"Processed {n_files} files in {delta_t:.6f} seconds")
 
 
@@ -131,7 +139,12 @@ print(f"Processed {n_files} files in {delta_t:.6f} seconds")
 # cd /Applications/Cubit-16.18
 # ./cubit.command
 # import abaqus "/Users/chovey/scratch/ixi/output/IXI012-HH-1211-T1_small.inp"
+# or
+# import mesh "/Users/chovey/scratch/ixi/output/IXI012-HH-1211-T1_small.exo" lite
 # view iso
+# view up 0 0 1  # z-axis up
+# view from 100 -100 100
+# graphics scale on
 # graphics clip on
 # graphics clip on location 7.55 9.25 7.75 direction -1 0 0 # center point of the domain in a001.log
 # graphics clip manipulation off
