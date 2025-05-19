@@ -34,9 +34,13 @@ AUTOMESH: Final[Path] = Path(
 MM_TO_M: Final[float] = 1e-3  # Convert mm to m
 NPY_INPUT: Final[Path] = Path("~/scratch/ixi/input/").expanduser()
 NPY_OUTPUT: Final[Path] = Path("~/scratch/ixi/output/").expanduser()
-IGNORE_IDS: Final[list[int]] = [0, 1]
+IGNORE_IDS: Final[list[int]] = [0]  # remove void
+# IGNORE_IDS: Final[list[int]] = [0, 1]  # remove void and skull
+# IGNORE_IDS: Final[list[int]] = [0, 1, 2]  # remove void, skull, and csf
+
 # REMOVES: Final[str] = " ".join([f"-r {id_}" for id_ in IGNORE_IDS])
-REMOVES: Final[list] = [item for rem in IGNORE_IDS for item in ("-r", rem)]
+# REMOVES: Final[list] = [item for rem in IGNORE_IDS for item in ("-r", rem)]
+REMOVES = [item for pair in zip(["-r"] * len(IGNORE_IDS), map(str, IGNORE_IDS)) for item in pair]
 TEST = False  # Perform a consistency validation against known data
 # TEST = True  # Perform a consistency validation against known data
 # ----------------
@@ -101,10 +105,7 @@ for npy_file in npy_files:
         "-o",
         str(output_file),
     ] 
-    breakpoint()
     command += REMOVES
-
-    breakpoint()
 
     print(f"Command: {command}")
 
@@ -115,8 +116,6 @@ for npy_file in npy_files:
     else:
         print("automesh command failed:")
         print(result.stderr)  # error message
-
-    breakpoint()
 
     print(f"Processed file: {npy_file}")
     print(f"  Center of Geometry: {cc}")
