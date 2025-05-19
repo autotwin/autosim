@@ -1,3 +1,6 @@
+![Python 3.11 Supported](https://img.shields.io/badge/Python-3.11-brightgreen)
+![Python 3.12 Supported](https://img.shields.io/badge/Python-3.12-brightgreen)
+
 # Abaqus Brain Simulation + Postprocessing
 
 This repository contains scripts and input files to run a finite element simulation of brain mechanics using Abaqus/Explicit, and postprocess the output. This repo and this README are both a work in progress. Immediate next steps involve full automation of the simulation + post processing pipeline.
