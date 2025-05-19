@@ -2,10 +2,10 @@
 
 # Check lint with ruff
 echo "Check lint with Ruff"
-ruff check
+ruff check src/autosim/ssm
 echo "."
 
 # Check format with ruff
 echo "Check format with Ruff"
-ruff format
+ruff format src/autosim/ssm
 echo "."

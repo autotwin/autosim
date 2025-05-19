@@ -42,7 +42,11 @@ IGNORE_IDS: Final[list[int]] = [0]  # remove void
 
 # REMOVES: Final[str] = " ".join([f"-r {id_}" for id_ in IGNORE_IDS])
 # REMOVES: Final[list] = [item for rem in IGNORE_IDS for item in ("-r", rem)]
-REMOVES = [item for pair in zip(["-r"] * len(IGNORE_IDS), map(str, IGNORE_IDS)) for item in pair]
+REMOVES = [
+    item
+    for pair in zip(["-r"] * len(IGNORE_IDS), map(str, IGNORE_IDS))
+    for item in pair
+]
 TEST = False  # Perform a consistency validation against known data
 # TEST = True  # Perform a consistency validation against known data
 # ----------------
@@ -107,7 +111,7 @@ for npy_file in npy_files:
         str(npy_file),
         "-o",
         str(output_file),
-    ] 
+    ]
     command += REMOVES
 
     ts = ["--xtranslate", "--ytranslate", "--ztranslate"]  # translate strings
@@ -125,7 +129,6 @@ for npy_file in npy_files:
     else:
         print("automesh command failed:")
         print(result.stderr)  # error message
-
 
 
 end_time = time.time()
