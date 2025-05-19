@@ -58,7 +58,7 @@ SCALING: Final[dict] = {
 }
 SMOOTHING: Final[bool] = True  # Smooth the mesh
 # SMOOTHING: Final[bool] = False  # Smooth the mesh
-SMOOTHING_ITERATIONS: Final[int] = 8  # Number of smoothing iterations
+SMOOTHING_ITERATIONS: Final[int] = 4  # Number of smoothing iterations
 TEST = False  # Perform a consistency validation against known data
 # TEST = True  # Perform a consistency validation against known data
 # ----------------

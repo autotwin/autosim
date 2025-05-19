@@ -1,0 +1,100 @@
+model_aspect:
+  type: hmodel
+  folder: ~/scratch/ixi/output
+  file: IXI012-HH-1211-T1_large.csv
+  skip_rows: 1
+  ycolumn: 0
+  plot_kwargs:
+    alpha: 0.7
+    color: blue
+    label: IXI012-HH-1211-T1_large
+    linewidth: 2.0
+model_msj:
+  type: hmodel
+  folder: ~/scratch/ixi/output
+  file: IXI012-HH-1211-T1_large.csv
+  skip_rows: 1
+  ycolumn: 1
+  plot_kwargs:
+    alpha: 0.7
+    color: blue
+    label: IXI012-HH-1211-T1_large
+    linewidth: 2.0
+model_skew:
+  type: hmodel
+  folder: ~/scratch/ixi/output
+  file: IXI012-HH-1211-T1_large.csv
+  skip_rows: 1
+  ycolumn: 2
+  plot_kwargs:
+    alpha: 0.7
+    color: blue
+    label: IXI012-HH-1211-T1_large
+    linewidth: 2.0
+model_vol:
+  type: hmodel
+  folder: ~/scratch/ixi/output
+  file: IXI012-HH-1211-T1_large.csv
+  skip_rows: 1
+  ycolumn: 3
+  plot_kwargs:
+    alpha: 0.7
+    color: blue
+    label: IXI012-HH-1211-T1_large
+    linewidth: 2.0
+figure_aspect:
+  type: hview
+  models: [model_aspect]
+  folder: ~/scratch/ixi/output
+  file: IXI012-HH-1211-T1_large_aspect.png
+  size: [8.0, 6.0]
+  title: Maximum Aspect Ratio
+  xlabel: Maximum Aspect Ratio
+  ylabel: Frequency
+  details: true
+  display: false
+  dpi: 100
+  latex: false
+  save: true
+figure_msj:
+  type: hview
+  models: [model_msj]
+  folder: ~/scratch/ixi/output
+  file: IXI012-HH-1211-T1_large_msj.png
+  size: [8.0, 6.0]
+  title: Minimum Scaled Jacobian
+  xlabel: Minimum Scaled Jacobian
+  ylabel: Frequency
+  details: true
+  display: false
+  dpi: 100
+  latex: false
+  save: true
+figure_skew:
+  type: hview
+  models: [model_skew]
+  folder: ~/scratch/ixi/output
+  file: IXI012-HH-1211-T1_large_skew.png
+  size: [8.0, 6.0]
+  title: Maximum Skew
+  xlabel: Maximum Skew
+  ylabel: Frequency
+  details: true
+  display: false
+  dpi: 100
+  latex: false
+  save: true
+figure_vol:
+  type: hview
+  models: [model_vol]
+  folder: ~/scratch/ixi/output
+  file: IXI012-HH-1211-T1_large_vol.png
+  size: [8.0, 6.0]
+  title: Element Volume
+  xlabel: Element Volume
+  ylabel: Frequency
+  details: true
+  display: false
+  dpi: 100
+  latex: false
+  save: true
