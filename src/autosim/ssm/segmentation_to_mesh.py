@@ -33,27 +33,50 @@ AUTOMESH: Final[Path] = Path(
 ).expanduser()
 # MESH_OUTPUT_TYPE = ".inp"
 MESH_OUTPUT_TYPE = ".exo"
+IGNORE_IDS: Final[list[int]] = [0]  # remove void
 MM_TO_M: Final[float] = 1e-3  # Convert mm to m
 NPY_INPUT: Final[Path] = Path("~/scratch/ixi/input/").expanduser()
 NPY_OUTPUT: Final[Path] = Path("~/scratch/ixi/output/").expanduser()
-IGNORE_IDS: Final[list[int]] = [0]  # remove void
-# IGNORE_IDS: Final[list[int]] = [0, 1]  # remove void and skull
-# IGNORE_IDS: Final[list[int]] = [0, 1, 2]  # remove void, skull, and csf
-
-# REMOVES: Final[str] = " ".join([f"-r {id_}" for id_ in IGNORE_IDS])
-# REMOVES: Final[list] = [item for rem in IGNORE_IDS for item in ("-r", rem)]
 REMOVES = [
     item
     for pair in zip(["-r"] * len(IGNORE_IDS), map(str, IGNORE_IDS))
     for item in pair
 ]
+RESOLUTION: Final[dict] = {
+    "tiny": 12.0 / 20.0,  # voxel/cm
+    "small": 42.0 / 20.0,  # voxel/cm
+    "medium": 80.0 / 20.0,  # voxel/cm
+    "large": 150.0 / 20.0,  # voxel/cm
+}
+LENGTH_SCALE: Final[str] = "mm"  # mm, cm, m
+SCALING: Final[dict] = {
+    "mm": 10.0,  # mm/cm
+    "cm": 1.0,  # cm/cm
+    "m": 0.01,  # m/cm
+}
 TEST = False  # Perform a consistency validation against known data
 # TEST = True  # Perform a consistency validation against known data
 # ----------------
 # input file end
 # ----------------
 
-start_time = time.time()  # start time
+print("Resolution: pixels per cm")
+for item in RESOLUTION:
+    print(f"  {item}: {RESOLUTION[item]} voxel/cm")
+
+print(f"Output length scale: {LENGTH_SCALE}")
+# print("Scaling:")
+# for item in RESOLUTION:
+#     print(f"  {item}: {SCALING[LENGTH_SCALE] / RESOLUTION[item]}")
+SCALES: Final[dict] = {
+    "tiny": SCALING[LENGTH_SCALE] / RESOLUTION["tiny"],
+    "small": SCALING[LENGTH_SCALE] / RESOLUTION["small"],
+    "medium": SCALING[LENGTH_SCALE] / RESOLUTION["medium"],
+    "large": SCALING[LENGTH_SCALE] / RESOLUTION["large"],
+}
+print("Scaling factors:")
+for k, v in SCALES.items():
+    print(f"  {k}: {v:.6f} {LENGTH_SCALE}/voxel")
 
 if TEST:
     folder = Path(
@@ -85,6 +108,8 @@ if TEST:
 
     print("All tests passed.")
 
+start_time = time.time()  # start time
+
 assert NPY_INPUT.is_dir(), f"Input folder {NPY_INPUT} not found."
 assert NPY_OUTPUT.is_dir(), f"Output folder {NPY_OUTPUT} not found."
 
@@ -99,7 +124,7 @@ for npy_file in npy_files:
     cc: np.ndarray = center_of_geometry(bb)
 
     print(f"Processing: {npy_file}")
-    print(f"  Center of Geometry: {cc} voxels")
+    print(f"  Center of Geometry: {cc} voxel")
 
     output_file = NPY_OUTPUT.joinpath(npy_file.stem + MESH_OUTPUT_TYPE)
 
@@ -114,9 +139,26 @@ for npy_file in npy_files:
     ]
     command += REMOVES
 
-    ts = ["--xtranslate", "--ytranslate", "--ztranslate"]  # translate strings
-    tv = [str(-1.0 * item) for item in cc]  # translate values
-    tt = [item for pair in zip(ts, tv) for item in pair]  # translate list
+    if "tiny" in str(npy_file):
+        scale = SCALES["tiny"]
+    elif "small" in str(npy_file):
+        scale = SCALES["small"]
+    elif "medium" in str(npy_file):
+        scale = SCALES["medium"]
+    elif "large" in str(npy_file):
+        scale = SCALES["large"]
+    else:
+        scale = 1.0
+
+    print(f"  Scale used for automesh: {scale} {LENGTH_SCALE}/voxel")
+    sk = ["--xscale", "--yscale", "--zscale"]  # scale strings
+    sv = [str(scale) for _ in sk]  # scale values
+    ss = [item for pair in zip(sk, sv) for item in pair]  # scale list
+    command += ss
+
+    tk = ["--xtranslate", "--ytranslate", "--ztranslate"]  # translate strings
+    tv = [str(-1.0 * scale * item) for item in cc]  # translate values
+    tt = [item for pair in zip(tk, tv) for item in pair]  # translate list
     command += tt
 
     print("Command:")
