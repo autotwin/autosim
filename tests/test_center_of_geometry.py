@@ -20,6 +20,7 @@ from autosim.ssm.center_of_geometry import (
     Segmentation,
 )
 
+
 @pytest.fixture(scope="module", autouse=True)
 def segmentation_file_fixture():
     """Fixture to the segmentation data from letter_f.npy"""
@@ -37,7 +38,9 @@ def segmentation_file_fixture():
 
 def test_no_such_file():
     """Tests a non-existed file raises an error."""
-    segmentation_file = Path(__file__).parent.joinpath("input", "no_such_file.npy")
+    segmentation_file = Path(__file__).parent.joinpath(
+        "input", "no_such_file.npy"
+    )
 
     msg = f"File {segmentation_file} not found."
     with pytest.raises(FileNotFoundError, match=msg):
@@ -67,11 +70,15 @@ def test_invalid_remove_ids(segmentation_file_fixture):
 def test_cli_valid_input(segmentation_file_fixture):
     """Tests the CLI function with valid input from the fixture."""
     # segmentation_file = Path(__file__).parent / "letter_f.npy"
-    gold_segmentation_file = Path(__file__).parent.joinpath("input", "letter_f.npy")
+    gold_segmentation_file = Path(__file__).parent.joinpath(
+        "input", "letter_f.npy"
+    )
     gold_remove_ids = [0]
 
     # Call the CLI function
-    cli_command = cli(input_file=segmentation_file_fixture, remove=gold_remove_ids)
+    cli_command = cli(
+        input_file=segmentation_file_fixture, remove=gold_remove_ids
+    )
 
     msg = "Instance is not of type CliCommand."
     assert isinstance(cli_command, CliCommand), msg
