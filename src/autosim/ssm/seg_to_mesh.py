@@ -6,10 +6,12 @@ from typing import Final
 
 import numpy as np
 
+import autosim.ssm.center_of_geometry as cog
+
 from center_of_geometry import (
-    center_of_geometry,
-    CliTuple,
+    CliCommand,
     segmentation_and_remove_ids,
+    center_of_geometry,
 )
 
 # ----------------
@@ -45,7 +47,7 @@ if TEST:
     for ii, sp in enumerate([sp1, sp2, sp3, sp4]):
         assert sp.is_file(), f"Input file {sp} not found."
         cog = center_of_geometry(
-            segmentation_and_remove_ids(CliTuple(input_file=sp, remove=[0]))
+            segmentation_and_remove_ids(CliCommand(input_file=sp, remove=[0]))
         )
 
         EXPECTED_COG = known_cogs[ii]
@@ -58,7 +60,7 @@ assert NPY_FILE.is_file(), f"Input file {NPY_FILE} not found."
 
 cog = center_of_geometry(
     segmentation_and_remove_ids(
-        CliTuple(input_file=NPY_FILE, remove=IGNORE_IDS)
+        CliCommand(input_file=NPY_FILE, remove=IGNORE_IDS)
     )
 )
 

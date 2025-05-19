@@ -3,7 +3,7 @@ from the letter_f.npy unit test of automesh.
 
 To run:
 pytest
-pytest --cov=center_of_geometry --cov-report=term-missing test_center_of_geometry.py -v
+pytest --cov --cov-report=term-missing
 """
 
 from pathlib import Path
@@ -12,7 +12,7 @@ from typing import Final
 import numpy as np
 import pytest
 
-from center_of_geometry import (
+from autosim.ssm.center_of_geometry import (
     center_of_geometry,
     cli,
     CliCommand,
@@ -20,11 +20,11 @@ from center_of_geometry import (
     Segmentation,
 )
 
-
 @pytest.fixture(scope="module", autouse=True)
 def segmentation_file_fixture():
     """Fixture to the segmentation data from letter_f.npy"""
-    segmentation_file = Path(__file__).parent / "letter_f.npy"
+    # segmentation_file = Path(__file__).parent / "letter_f.npy"
+    segmentation_file = Path(__file__).parent.joinpath("input", "letter_f.npy")
 
     # Check if the file exists
     if not segmentation_file.is_file():
@@ -37,7 +37,7 @@ def segmentation_file_fixture():
 
 def test_no_such_file():
     """Tests a non-existed file raises an error."""
-    segmentation_file = Path(__file__).parent / "no_such_file.npy"
+    segmentation_file = Path(__file__).parent.joinpath("input", "no_such_file.npy")
 
     msg = f"File {segmentation_file} not found."
     with pytest.raises(FileNotFoundError, match=msg):
@@ -46,41 +46,40 @@ def test_no_such_file():
 
 def test_invalid_file_type():
     """Tests an invalid file type raises an error."""
-    segmentation_file = Path(__file__).parent / "letter_f.spn"
+    segmentation_file = Path(__file__).parent.joinpath("input", "letter_f.spn")
 
     msg = f"File {segmentation_file} must be a .npy file."
     with pytest.raises(ValueError, match=msg):
         cli(segmentation_file, remove=[])
 
 
-def test_invalid_remove_ids():
+def test_invalid_remove_ids(segmentation_file_fixture):
     """Tests invalid remove IDs raise an error."""
-    segmentation_file = Path(__file__).parent / "letter_f.npy"
-
     msg = "Remove IDs must be integers."
     with pytest.raises(ValueError, match=msg):
-        cli(segmentation_file, remove=[-1, 2.5])
+        cli(segmentation_file_fixture, remove=[-1, 2.5])
 
     msg = "Remove IDs must be non-negative."
     with pytest.raises(ValueError, match=msg):
-        cli(segmentation_file, remove=[-1, 2])
+        cli(segmentation_file_fixture, remove=[-1, 2])
 
 
 def test_cli_valid_input(segmentation_file_fixture):
-    """Tests the CLI function with valid input."""
-    segmentation_file = Path(__file__).parent / "letter_f.npy"
-    remove_ids = [0]
+    """Tests the CLI function with valid input from the fixture."""
+    # segmentation_file = Path(__file__).parent / "letter_f.npy"
+    gold_segmentation_file = Path(__file__).parent.joinpath("input", "letter_f.npy")
+    gold_remove_ids = [0]
 
     # Call the CLI function
-    cli_instance = cli(segmentation_file_fixture, remove=remove_ids)
+    cli_command = cli(input_file=segmentation_file_fixture, remove=gold_remove_ids)
 
     msg = "Instance is not of type CliCommand."
-    assert isinstance(cli_instance, CliCommand), msg
-    assert cli_instance.input_file == segmentation_file, (
-        f"Expected {segmentation_file}, got {cli_instance.input_file}"
+    assert isinstance(cli_command, CliCommand), msg
+    assert cli_command.input_file == gold_segmentation_file, (
+        f"Expected {gold_segmentation_file}, got {cli_command.input_file}"
     )
-    assert cli_instance.remove == remove_ids, (
-        f"Expected {remove_ids}, got {cli_instance.remove}"
+    assert cli_command.remove == gold_remove_ids, (
+        f"Expected {gold_remove_ids}, got {cli_command.remove}"
     )
 
 

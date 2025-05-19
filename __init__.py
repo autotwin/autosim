@@ -1,0 +1,1 @@
+# The presence of an __init__.py file in a directory indicates to Python that the directory should be treated as a package. This allows you to import modules from that directory using the package name.
