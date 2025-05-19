@@ -1,5 +1,4 @@
-![Python 3.11 Supported](https://img.shields.io/badge/Python-3.11-brightgreen)
-![Python 3.12 Supported](https://img.shields.io/badge/Python-3.12-brightgreen)
+![Python 3.11 and 3.12 supported](https://img.shields.io/badge/Python-3.11_|_3.12-blue)
 
 # Abaqus Brain Simulation + Postprocessing
 
