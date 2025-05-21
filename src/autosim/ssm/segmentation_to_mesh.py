@@ -42,6 +42,7 @@ REMOVES = [
     for pair in zip(["-r"] * len(IGNORE_IDS), map(str, IGNORE_IDS))
     for item in pair
 ]
+# TODO: update the resolutions with Emma
 RESOLUTION: Final[dict] = {
     "tiny": 12.0 / 20.0,  # voxel/cm
     "small": 42.0 / 20.0,  # voxel/cm
