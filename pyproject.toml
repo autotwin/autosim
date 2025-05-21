@@ -12,6 +12,7 @@ readme = "README.md"
 license = { file="LICENSE" }
 requires-python = ">=3.11"
 dependencies = [
+    "figio>=0.0.7",
     "numpy>=2.0.2",
     "pytest>=8.3.5",
     "pytest-cov>=6.1.1",
