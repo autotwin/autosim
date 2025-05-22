@@ -135,16 +135,19 @@ for the `autotwin mesh hex` command.
 
 The meshes are made with [`segmentation_to_mesh.py`](segmentation_to_mesh.py).
 
+> Remark: The `segmentation_to_mesh.py` workflow depends on a installation of `automesh`.  See these [installation instructions](https://autotwin.github.io/automesh/installation.html).
+
 Below are three meshes, translated to their center, but not scaled (thus length units are in voxels), created with `segmentation_to_mesh.py`:
 
 `IXI012-HH-1211-T1_small.png` | `IXI012-HH-1211-T1_medium.png` | `IXI012-HH-1211-T1_large.png`
 :---: | :---: | :---:
 ![](fig/IXI012-HH-1211-T1_small.png) | ![](fig/IXI012-HH-1211-T1_medium.png) | ![](fig/IXI012-HH-1211-T1_large.png)
+[`IXI012-HH-1211-T1_small.inp`](https://1drv.ms/u/c/3cc1bee5e2795295/EVd-rG0kkEBFmKSF8JvtnxkBHNSAFDcFrlF_EnurBBi_Ww?e=xgGl8R) | [`IXI012-HH-1211-T1_medium.inp`](https://1drv.ms/u/c/3cc1bee5e2795295/EXBHE63J6HtCglYbUx6BVWoBUqlbX4pEBDRZKThESzKcxA?e=yWQhLz) | [`IXI012-HH-1211-T1_large.inp`](https://1drv.ms/u/c/3cc1bee5e2795295/EZ-HSHXauRVFtfwAMaXCMVoBccC1eyQ-o7v-m-QTD43Hvw?e=wyoNUv)
 
 ## Next Point: Simulation
 
-To come.
+Work in progress.
 
 ## Next Point: Post-processing
 
-To come.
+Work in progress.

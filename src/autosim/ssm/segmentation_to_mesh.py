@@ -2,17 +2,19 @@
 .exo or .inp format.
 
 Run:
-python segmentation_to_mesh.py
+source ~/autotwin/autosim/.venv/bin/activate
+python src/autosim/ssm/segmentation_to_mesh.py
 """
 
+from enum import Enum
 from pathlib import Path
 import subprocess
 import time
-from typing import Final
+from typing import NamedTuple, Final
 
 import numpy as np
 
-from center_of_geometry import (
+from autosim.ssm.center_of_geometry import (
     cli,
     CliCommand,
     center_of_geometry,
@@ -20,23 +22,75 @@ from center_of_geometry import (
     segmentation_and_remove_ids,
 )
 
-# ----------------
-# input file begin
-# ----------------
-# Reference:
-#
-# NPY_FILE: Final[Path] = Path(
-#     "~/scratch/ixi/IXI012-HH-1211-T1_tiny.npy"
-# ).expanduser()
-AUTOMESH: Final[Path] = Path(
-    "~/autotwin/automesh/target/release/automesh"
-).expanduser()
-# MESH_OUTPUT_TYPE = ".inp"
-MESH_OUTPUT_TYPE = ".exo"
-IGNORE_IDS: Final[list[int]] = [0]  # remove void
+
+class LengthScale(Enum):
+    """Length scale enum for the segmentation_to_mesh.py script."""
+
+    millimeters = "mm"
+    centimeters = "cm"
+    meters = "m"
+
+
+class Input(NamedTuple):
+    """Input class for the segmentation_to_mesh.py script."""
+
+    automesh: str
+    input_folder: str
+    output_folder: str
+    output_type: str  # ".inp" or ".exo"
+    remove: list[int]
+    length_scale: LengthScale
+    metrics: bool  # Calculate metrics
+    smoothing: bool  # Smooth the mesh
+    smoothing_iterations: int  # Number of smoothing iterations
+
+
+# -------------------
+# user settings begin
+# -------------------
+input_Chad = Input(
+    automesh="~/autotwin/automesh/target/release/automesh",
+    input_folder="~/scratch/ixi/input/",
+    output_folder="~/scratch/ixi/output/",
+    output_type=".inp",
+    remove=[0],
+    length_scale=LengthScale.millimeters,
+    metrics=True,
+    smoothing=True,
+    smoothing_iterations=2,
+)
+# Emma to update these local variables to suit her environment
+input_Emma = Input(
+    automesh="~/autotwin/automesh/target/release/automesh",
+    input_folder="~/scratch/ixi/input/",
+    output_folder="~/scratch/ixi/output/",
+    output_type=".inp",
+    remove=[0],
+    length_scale=LengthScale.millimeters,
+    metrics=False,
+    smoothing=True,
+    smoothing_iterations=2,
+)
+# -------------------
+# user settings end
+# -------------------
+
+ii = input_Chad
+# ii = input_Emma
+
+# Harvest constants from user input settings
+AUTOMESH: Final[Path] = Path(ii.automesh).expanduser().resolve()
+NPY_INPUT: Final[Path] = Path(ii.input_folder).expanduser().resolve()
+NPY_OUTPUT: Final[Path] = Path(ii.output_folder).expanduser().resolve()
+MESH_OUTPUT_TYPE = ii.output_type
+IGNORE_IDS: Final[list[int]] = ii.remove
+LENGTH_SCALE: Final[str] = ii.length_scale.value
+METRICS: Final[bool] = ii.metrics
+SMOOTHING: Final[bool] = ii.smoothing
+SMOOTHING_ITERATIONS: Final[int] = ii.smoothing_iterations
+
+# Additional setup
 MM_TO_M: Final[float] = 1e-3  # Convert mm to m
-NPY_INPUT: Final[Path] = Path("~/scratch/ixi/input/").expanduser()
-NPY_OUTPUT: Final[Path] = Path("~/scratch/ixi/output/").expanduser()
 REMOVES = [
     item
     for pair in zip(["-r"] * len(IGNORE_IDS), map(str, IGNORE_IDS))
@@ -49,31 +103,19 @@ RESOLUTION: Final[dict] = {
     "medium": 80.0 / 20.0,  # voxel/cm
     "large": 150.0 / 20.0,  # voxel/cm
 }
-LENGTH_SCALE: Final[str] = "mm"  # mm, cm, m
-METRICS: Final[bool] = True  # Calculate metrics
-# METRICS: Final[bool] = False  # Calculate metrics
 SCALING: Final[dict] = {
     "mm": 10.0,  # mm/cm
     "cm": 1.0,  # cm/cm
     "m": 0.01,  # m/cm
 }
-SMOOTHING: Final[bool] = True  # Smooth the mesh
-# SMOOTHING: Final[bool] = False  # Smooth the mesh
-SMOOTHING_ITERATIONS: Final[int] = 4  # Number of smoothing iterations
 TEST = False  # Perform a consistency validation against known data
 # TEST = True  # Perform a consistency validation against known data
-# ----------------
-# input file end
-# ----------------
 
 print("Resolution: pixels per cm")
 for item in RESOLUTION:
     print(f"  {item}: {RESOLUTION[item]} voxel/cm")
 
 print(f"Output length scale: {LENGTH_SCALE}")
-# print("Scaling:")
-# for item in RESOLUTION:
-#     print(f"  {item}: {SCALING[LENGTH_SCALE] / RESOLUTION[item]}")
 SCALES: Final[dict] = {
     "tiny": SCALING[LENGTH_SCALE] / RESOLUTION["tiny"],
     "small": SCALING[LENGTH_SCALE] / RESOLUTION["small"],
@@ -85,9 +127,7 @@ for k, v in SCALES.items():
     print(f"  {k}: {v:.6f} {LENGTH_SCALE}/voxel")
 
 if TEST:
-    folder = Path(
-        "~/autotwin/automesh/book/analysis/sphere_with_shells"
-    ).expanduser()
+    folder = Path("~/autotwin/automesh/book/analysis/sphere_with_shells").expanduser()
     sp1 = folder.joinpath("spheres_resolution_1.npy")
     sp2 = folder.joinpath("spheres_resolution_2.npy")
     sp3 = folder.joinpath("spheres_resolution_3.npy")
