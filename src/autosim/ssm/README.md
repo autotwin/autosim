@@ -146,7 +146,118 @@ Below are three meshes, translated to their center, but not scaled (thus length 
 
 ## Next Point: Simulation
 
-Work in progress.
+Move the output `.exo` meshes to the HPC, command+K
+
+```sh
+~/autotwin/ssm/geometry/ixi
+  IXI012-HH-1211-T1_small
+    IXI012-HH-1211-T1_small.exo
+  IXI012-HH-1211-T1_medium
+    IXI012-HH-1211-T1_medium.exo
+  IXI012-HH-1211-T1_large
+    IXI012-HH-1211-T1_large.exo
+```
+
+Copy the seeded `submit_script` used for mesh decomposition:
+
+```sh
+cp ~/autotwin/ssm/geometry/submit_script ~/autotwin/ssm/geometry/ixi/IXI012-HH-1211-T1_small/
+```
+
+Update the `submit_script` as follows:
+
+```sh
+#!/bin/bash
+
+module purge
+module load sierra
+module load seacas
+
+# previously ran with 16 processors
+# PROCS=16
+# 10 nodes = 160 processors
+PROCS=160
+# PROCS=320
+# PROCS=336
+
+# geometry and mesh file
+# GFILE="../geometry/bob-1mm-5kg-helmet2-hemi.g"
+# GFILE="/projects/sibl/data/bob-1mm-5kg-helmet-hemi/bob-1mm-5kg-helmet2-hemi.g"
+# GFILE="/projects/sibl/data/bob-1mm-5kg-helmet-hemi/bob-1mm-5kg-helmet2-hemi.g"
+# GFILE="../../geometry/bob-1mm-5kg-helmet2-hemi.g"
+# GFILE="bob-1mm-5kg-helmet2-hemi.g"
+# GFILE="sphere/sr2/spheres_resolution_2.exo"
+GFILE="IXI012-HH-1211-T1_small.exo"
+
+decomp --processors $PROCS $GFILE
+
+# short can be used for nodes <= 40 and wall time <= 4:00:00 (4 hours)
+```
+
+Run the script to decompose the mesh:
+
+```sh
+./submit_script
+```
+
+Verify that the mesh file is decomposed into `160` domains:
+
+```sh
+ls
+-rw------- 1 chovey chovey   38260 May 23 14:21 IXI012-HH-1211-T1_small.exo.160.000
+...
+-rw------- 1 chovey chovey   37988 May 23 14:22 IXI012-HH-1211-T1_small.exo.160.159
+```
+
+### Input File
+
+Create the input file from a seede working input file:
+
+```sh
+mkdir ~/autotwin/ssm/input/IXI012-HH-1211-T1_small
+cp ~/autotwin/ssm/input/sr4c/sr4c.i ~/autotwin/ssm/input/IXI012-HH-1211-T1_small/ssm_input.i
+```
+
+
+Copy seeded submit scripts:
+
+```sh
+cd ~/autotwin/ssm/input/sr4c
+cp submit_check ../IXI012-HH-1211-T1_small/.
+cp submit_clean ../IXI012-HH-1211-T1_small/.
+cp submit_script ../IXI012-HH-1211-T1_small/.
+```
+
+Update the `submit` scripts:
+
+```sh
+cd ../IXI012-HH-1211-T1_small/
+```
+
+* Udpate `submit_check`.
+* The `submit_clean` reqires no modification.
+* Update `submit_script`.
+* Update `ssm_input.i`.
+
+### Queue Reference
+
+```sh
+mywcid
+sinfo
+squeue -u chovey
+squeue -u chovey --start
+
+# .bash_profile alias shortcuts
+alias sq="squeue -u chovey"
+alias ss="squeue -u chovey --start"
+```
+
+# Sample scripts are available in /projects/samples/
+
+
+item | `sim` | bc (ms, krad/s) | T_sim (ms) | machine | # proc | cpu time (hh:mm)
+:---: | :---: | :---: | ---: | :---: | ---: | ---: |
+ | `IXI012-HH-1211-T1_small` | ?? 8, 8 | ?? 20 | ?? ghost | 160 | ?? 00:48
 
 ## Next Point: Post-processing
 
