@@ -277,6 +277,8 @@ item | `sim` | # elements | bc (ms, krad/s) | T_sim (ms) | machine | # proc | cp
 
 ### Left Hook
 
+![left_hook](fig/left_hook.gif)
+
 Excerpt from [Boxing Stars](https://youtu.be/AbX575YegkM?si=rpbexI9316m8i7pE).  Converted with [Adobe Express](https://new.express.adobe.com/tools/convert-to-gif?referrer=https%3A%2F%2Fsearch.brave.com%2F&url=%2Fexpress%2Ffeature%2Fvideo%2Fconvert%2Fvideo-to-gif&placement=outside-blocks&locale=en-US&contentRegion=us&%24web_only=true)
 
 ### Brain Strain
