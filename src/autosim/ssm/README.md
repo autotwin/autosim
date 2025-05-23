@@ -270,7 +270,7 @@ item | `sim` | bc (ms, krad/s) | T_sim (ms) | machine | # proc | cpu time (hh:mm
   * seems not to work
   * Plan B: copy .exo results files to local (only about 190 MB, tractable for now)
 * File | Open...
-* Clip plan at (0, 0, 0) in direction (0, 0, 1)
+* Clip plane at (0, 0, 0) in direction (0, 0, 1)
 * Opacity top hemisphere at 0.05.
 
 Create movie with [Exgif](https://ezgif.com/maker)
