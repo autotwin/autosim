@@ -236,7 +236,7 @@ Update the `submit` scripts:
 cd ../IXI012-HH-1211-T1_small/
 ```
 
-* Udpate [`submit_check`](https://github.com/autotwin/ssm/blob/main/input/IXI012-HH-1211-T1_small/submit_check).
+* Update [`submit_check`](https://github.com/autotwin/ssm/blob/main/input/IXI012-HH-1211-T1_small/submit_check).
 * The [`submit_clean`](https://github.com/autotwin/ssm/blob/main/input/IXI012-HH-1211-T1_small/submit_clean) reqires no modification.
 * Update [`submit_script`](https://github.com/autotwin/ssm/blob/main/input/IXI012-HH-1211-T1_small/submit_script).
 * Update [`ssm_input.i`](https://github.com/autotwin/ssm/blob/main/input/IXI012-HH-1211-T1_small/ssm_input.i).
@@ -259,7 +259,7 @@ alias ss="squeue -u chovey --start"
 
 item | `sim` | bc (ms, krad/s) | T_sim (ms) | machine | # proc | cpu time (hh:mm)
 :---: | :---: | :---: | ---: | :---: | ---: | ---: |
- | `IXI012-HH-1211-T1_small` | ?? 8, 8 | ?? 20 | ?? ghost | 160 | ?? 00:48
+8 | `IXI012-HH-1211-T1_small` | 8, 8 | 20 | attaway | 160 | ?? 00:48
 
 ## Next Point: Post-processing
 
