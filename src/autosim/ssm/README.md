@@ -261,7 +261,7 @@ Continuing from simulations `1..7` on [ssm](https://github.com/autotwin/ssm?tab=
 item | `sim` | # elements | bc (ms, krad/s) | T_sim (ms) | machine | # proc | cpu time (hh:mm)
 :---: | :---: | ---: | ---: | ---: | :---: | ---: | ---: |
 8 | `IXI012-HH-1211-T1_small` | 42,567 | 8, 8 | 20 | attaway | 160 | <1 min
-9 | `IXI012-HH-1211-T1_medium` | 273,278 | 8, 8 | 20 | attaway | 160 | ??
+9 | `IXI012-HH-1211-T1_medium` | 273,278 | 8, 8 | 20 | attaway | 160 | 00:03
 10 | `IXI012-HH-1211-T1_large` | 1,940,140 | 8, 8 | 20 | attaway | 160 | ??
 
 ## Post-processing
@@ -274,6 +274,12 @@ item | `sim` | # elements | bc (ms, krad/s) | T_sim (ms) | machine | # proc | cp
 * File | Open...
 * Clip plane at (0, 0, 0) in direction (0, 0, 1)
 * Opacity top hemisphere at 0.05.
+
+### Left Hook
+
+Excerpt from [Boxing Stars](https://youtu.be/AbX575YegkM?si=rpbexI9316m8i7pE).  Converted with [Adobe Express](https://new.express.adobe.com/tools/convert-to-gif?referrer=https%3A%2F%2Fsearch.brave.com%2F&url=%2Fexpress%2Ffeature%2Fvideo%2Fconvert%2Fvideo-to-gif&placement=outside-blocks&locale=en-US&contentRegion=us&%24web_only=true)
+
+### Brain Strain
 
 Create movie with [Exgif](https://ezgif.com/maker)
 
