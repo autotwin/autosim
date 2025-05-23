@@ -273,4 +273,4 @@ item | `sim` | bc (ms, krad/s) | T_sim (ms) | machine | # proc | cpu time (hh:mm
 
 Create movie with [Exgif](https://ezgif.com/maker)
 
-![IXI012-HH-1211-T1_small](IXI012-HH-1211-T1_small.gif)
+![IXI012-HH-1211-T1_small](fig/IXI012-HH-1211-T1_small.gif)
