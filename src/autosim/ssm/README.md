@@ -256,10 +256,21 @@ alias ss="squeue -u chovey --start"
 
 ### Simulation Matrix
 
+Continuing from simulations `1..7` on [ssm](https://github.com/autotwin/ssm?tab=readme-ov-file#mesh-characteristics)
+
 item | `sim` | bc (ms, krad/s) | T_sim (ms) | machine | # proc | cpu time (hh:mm)
 :---: | :---: | :---: | ---: | :---: | ---: | ---: |
 8 | `IXI012-HH-1211-T1_small` | 8, 8 | 20 | attaway | 160 | <1 min
 
 ## Next Point: Post-processing
 
-Work in progress.
+* ParaView 5.12.0 on macOS (local)
+* File | Connect...
+* ghost (viz nodes)
+  * seems not to work
+  * Plan B: copy .exo results files to local (only about 190 MB, tractable for now)
+* File | Open...
+
+Create movie with [Exgif](https://ezgif.com/maker)
+
+![IXI012-HH-1211-T1_small](IXI012-HH-1211-T1_small.gif)
