@@ -164,7 +164,9 @@ Copy the seeded `submit_script` used for mesh decomposition:
 cp ~/autotwin/ssm/geometry/submit_script ~/autotwin/ssm/geometry/ixi/IXI012-HH-1211-T1_small/
 ```
 
-Update the `submit_script` as follows:
+### Mesh Decomposition
+
+Update the [`submit_script`](https://github.com/autotwin/ssm/blob/main/geometry/ixi/IXI012-HH-1211-T1_small/submit_script) as follows:
 
 ```sh
 #!/bin/bash
@@ -234,10 +236,10 @@ Update the `submit` scripts:
 cd ../IXI012-HH-1211-T1_small/
 ```
 
-* Udpate `submit_check`.
-* The `submit_clean` reqires no modification.
-* Update `submit_script`.
-* Update `ssm_input.i`.
+* Udpate [`submit_check`](https://github.com/autotwin/ssm/blob/main/input/IXI012-HH-1211-T1_small/submit_check).
+* The [`submit_clean`](https://github.com/autotwin/ssm/blob/main/input/IXI012-HH-1211-T1_small/submit_clean) reqires no modification.
+* Update [`submit_script`](https://github.com/autotwin/ssm/blob/main/input/IXI012-HH-1211-T1_small/submit_script).
+* Update [`ssm_input.i`](https://github.com/autotwin/ssm/blob/main/input/IXI012-HH-1211-T1_small/ssm_input.i).
 
 ### Queue Reference
 
