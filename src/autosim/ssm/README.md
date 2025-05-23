@@ -254,12 +254,11 @@ alias sq="squeue -u chovey"
 alias ss="squeue -u chovey --start"
 ```
 
-# Sample scripts are available in /projects/samples/
-
+### Simulation Matrix
 
 item | `sim` | bc (ms, krad/s) | T_sim (ms) | machine | # proc | cpu time (hh:mm)
 :---: | :---: | :---: | ---: | :---: | ---: | ---: |
-8 | `IXI012-HH-1211-T1_small` | 8, 8 | 20 | attaway | 160 | ?? 00:48
+8 | `IXI012-HH-1211-T1_small` | 8, 8 | 20 | attaway | 160 | <1 min
 
 ## Next Point: Post-processing
 
