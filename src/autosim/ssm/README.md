@@ -258,9 +258,11 @@ alias ss="squeue -u chovey --start"
 
 Continuing from simulations `1..7` on [ssm](https://github.com/autotwin/ssm?tab=readme-ov-file#mesh-characteristics)
 
-item | `sim` | bc (ms, krad/s) | T_sim (ms) | machine | # proc | cpu time (hh:mm)
-:---: | :---: | :---: | ---: | :---: | ---: | ---: |
-8 | `IXI012-HH-1211-T1_small` | 8, 8 | 20 | attaway | 160 | <1 min
+item | `sim` | # elements | bc (ms, krad/s) | T_sim (ms) | machine | # proc | cpu time (hh:mm)
+:---: | :---: | :---: | ---: | ---: | :---: | ---: | ---: |
+8 | `IXI012-HH-1211-T1_small` | 42,567 | 8, 8 | 20 | attaway | 160 | <1 min
+9 | `IXI012-HH-1211-T1_medium` | 273,278 | 8, 8 | 20 | attaway | 160 | ??
+10 | `IXI012-HH-1211-T1_large` | 1,940,140 | 8, 8 | 20 | attaway | 160 | ??
 
 ## Post-processing
 
