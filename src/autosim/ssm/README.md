@@ -144,7 +144,7 @@ Below are three meshes, translated to their center, but not scaled (thus length 
 ![](fig/IXI012-HH-1211-T1_small.png) | ![](fig/IXI012-HH-1211-T1_medium.png) | ![](fig/IXI012-HH-1211-T1_large.png)
 [`IXI012-HH-1211-T1_small.inp`](https://1drv.ms/u/c/3cc1bee5e2795295/EVd-rG0kkEBFmKSF8JvtnxkBHNSAFDcFrlF_EnurBBi_Ww?e=xgGl8R) | [`IXI012-HH-1211-T1_medium.inp`](https://1drv.ms/u/c/3cc1bee5e2795295/EXBHE63J6HtCglYbUx6BVWoBUqlbX4pEBDRZKThESzKcxA?e=yWQhLz) | [`IXI012-HH-1211-T1_large.inp`](https://1drv.ms/u/c/3cc1bee5e2795295/EZ-HSHXauRVFtfwAMaXCMVoBccC1eyQ-o7v-m-QTD43Hvw?e=wyoNUv)
 
-## Next Point: Simulation
+## Simulation
 
 Move the output `.exo` meshes to the HPC, command+K
 
@@ -262,7 +262,7 @@ item | `sim` | bc (ms, krad/s) | T_sim (ms) | machine | # proc | cpu time (hh:mm
 :---: | :---: | :---: | ---: | :---: | ---: | ---: |
 8 | `IXI012-HH-1211-T1_small` | 8, 8 | 20 | attaway | 160 | <1 min
 
-## Next Point: Post-processing
+## Post-processing
 
 * ParaView 5.12.0 on macOS (local)
 * File | Connect...
@@ -270,6 +270,8 @@ item | `sim` | bc (ms, krad/s) | T_sim (ms) | machine | # proc | cpu time (hh:mm
   * seems not to work
   * Plan B: copy .exo results files to local (only about 190 MB, tractable for now)
 * File | Open...
+* Clip plan at (0, 0, 0) in direction (0, 0, 1)
+* Opacity top hemisphere at 0.05.
 
 Create movie with [Exgif](https://ezgif.com/maker)
 
