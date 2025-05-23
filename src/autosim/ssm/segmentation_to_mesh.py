@@ -52,11 +52,11 @@ input_Chad = Input(
     automesh="~/autotwin/automesh/target/release/automesh",
     input_folder="~/scratch/ixi/input/",
     output_folder="~/scratch/ixi/output/",
-    output_type=".inp",
+    output_type=".exo",
     remove=[0],
-    length_scale=LengthScale.millimeters,
+    length_scale=LengthScale.centimeters,
     metrics=True,
-    smoothing=True,
+    smoothing=False,
     smoothing_iterations=2,
 )
 # Emma to update these local variables to suit her environment
@@ -66,7 +66,7 @@ input_Emma = Input(
     output_folder="~/scratch/ixi/output/",
     output_type=".inp",
     remove=[0],
-    length_scale=LengthScale.millimeters,
+    length_scale=LengthScale.meters,
     metrics=False,
     smoothing=True,
     smoothing_iterations=2,
