@@ -185,16 +185,8 @@ for npy_file in npy_files:
     ]
     command += REMOVES
 
-    if "tiny" in str(npy_file):
-        scale = SCALES["tiny"]
-    elif "small" in str(npy_file):
-        scale = SCALES["small"]
-    elif "medium" in str(npy_file):
-        scale = SCALES["medium"]
-    elif "large" in str(npy_file):
-        scale = SCALES["large"]
-    else:
-        scale = 1.0
+    # Determine the scale based on the file name
+    scale = next((SCALES[key] for key in SCALES if key in str(npy_file)), 1.0)
 
     if METRICS:
         output_file_csv = NPY_OUTPUT.joinpath(npy_file.stem + ".csv")
