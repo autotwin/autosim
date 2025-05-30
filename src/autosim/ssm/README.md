@@ -262,7 +262,7 @@ item | `sim` | # elements | bc (ms, krad/s) | T_sim (ms) | machine | # proc | cp
 :---: | :---: | ---: | ---: | ---: | :---: | ---: | ---: |
 8 | `IXI012-HH-1211-T1_small` | 42,567 | 8, 8 | 20 | attaway | 160 | <1 min
 9 | `IXI012-HH-1211-T1_medium` | 273,278 | 8, 8 | 20 | attaway | 160 | 00:03
-10 | `IXI012-HH-1211-T1_large` | 1,940,140 | 8, 8 | 20 | attaway | 160 | ??
+10 | `IXI012-HH-1211-T1_large` | 1,940,140 | 8, 8 | 20 | attaway | 160 | 09:35
 
 ## Post-processing
 
