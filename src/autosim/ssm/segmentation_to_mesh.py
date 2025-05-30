@@ -71,14 +71,14 @@ input_Emma = Input(
     smoothing=True,
     smoothing_iterations=2,
 )
-# -------------------
+# -----------------
 # user settings end
-# -------------------
+# -----------------
 
 ii = input_Chad
 # ii = input_Emma
 
-# Harvest constants from user input settings
+# Harvest constants from user input
 AUTOMESH: Final[Path] = Path(ii.automesh).expanduser().resolve()
 NPY_INPUT: Final[Path] = Path(ii.input_folder).expanduser().resolve()
 NPY_OUTPUT: Final[Path] = Path(ii.output_folder).expanduser().resolve()
@@ -230,7 +230,7 @@ end_time = time.time()
 delta_t = end_time - start_time
 n_files = len(npy_files)
 print("Done.")
-print(f"Processed {n_files} files in {delta_t:.6f} seconds")
+print(f"Processed {n_files} file(s) in {delta_t:.6f} seconds")
 
 
 # Visualization
