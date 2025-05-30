@@ -51,7 +51,7 @@ class Input(NamedTuple):
 input_Chad = Input(
     automesh="~/autotwin/automesh/target/release/automesh",
     input_folder="~/scratch/ixi/input/",
-    output_folder="~/scratch/ixi/output/",
+    output_folder="~/scratch/ixi/exo/",
     output_type=".exo",
     remove=[0],
     length_scale=LengthScale.centimeters,
@@ -63,7 +63,7 @@ input_Chad = Input(
 input_Emma = Input(
     automesh="~/autotwin/automesh/target/release/automesh",
     input_folder="~/scratch/ixi/input/",
-    output_folder="~/scratch/ixi/output/",
+    output_folder="~/scratch/ixi/inp/",
     output_type=".inp",
     remove=[0],
     length_scale=LengthScale.meters,
@@ -157,7 +157,10 @@ if TEST:
 start_time = time.time()  # start time
 
 assert NPY_INPUT.is_dir(), f"Input folder {NPY_INPUT} not found."
-assert NPY_OUTPUT.is_dir(), f"Output folder {NPY_OUTPUT} not found."
+
+if not NPY_OUTPUT.is_dir():
+    print(f"Creating output directory: {NPY_OUTPUT}")
+    NPY_OUTPUT.mkdir(parents=True, exist_ok=True)
 
 # Get the list of .npy files in the input directory
 npy_files = list(NPY_INPUT.glob("*.npy"))
