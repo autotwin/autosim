@@ -108,19 +108,31 @@ if HPC_RUN:
 
     for exo_file in exo_files:
         # Create a subfolder in the decomp folder for each .exo file
-        # decomp_subfolder = DECOMP_FOLDER.joinpath(exo_file.stem)
         decomp_subfolder = DECOMP_FOLDER / exo_file.stem
-        decomp_subfolder.mkdir(parents=True, exist_ok=True)
-        print(f"Processing {exo_file}...")
         print(f"Decomp subfolder: {decomp_subfolder}")
+
+        # Create the subfolder if it doesn't exist
+        decomp_subfolder.mkdir(parents=True, exist_ok=True)
+
+        # Print the source file being processed
+        print(f"Processing source: {exo_file}")
+
+        # Change into the decomp subfolder
+        try:
+            subprocess.run(["cd", str(decomp_subfolder)], check=True, shell=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Error changing directory to {decomp_subfolder}: {e}")
+            raise
+
+        # Print the current working directory
+        print(f"Current working directory: {Path.cwd()}")
 
         # Construct the decomp command
         decomp_command = [
             "decomp",
             "--processors",
-            str(exo_file),
             str(N_PROCESSORS),
-            str(DECOMP_FOLDER / exo_file.stem),
+            str(exo_file),
         ]
 
         # Print the command being run
@@ -128,6 +140,13 @@ if HPC_RUN:
 
         # Run the command
         subprocess.run(decomp_command, check=True)
+
+        # Change back to the original directory
+        try:
+            subprocess.run(["cd", str(DECOMP_FOLDER)], check=True, shell=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Error changing directory back to {DECOMP_FOLDER}: {e}")
+            raise
 
 end_time = time.time()
 delta_t = end_time - start_time
