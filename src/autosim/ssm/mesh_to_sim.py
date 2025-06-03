@@ -33,7 +33,7 @@ from typing import NamedTuple, Final
 class Input(NamedTuple):
     """Input class for the mesh_to_sim.py script."""
 
-    input_folder: str
+    source_folder: str
     decomp_folder: str
     n_processors: int  # Number of processors for decomp
     hpc_run: bool = True  # Run on HPC or not
@@ -43,7 +43,7 @@ class Input(NamedTuple):
 # user settings begin
 # -------------------
 input_Chad = Input(
-    input_folder="~/scratch/ixi/exo/",
+    source_folder="~/scratch/ixi/exo/",
     decomp_folder="~/scratch/ixi/decomp/",
     n_processors=160,  # Number of processors for decomp
 )
@@ -54,7 +54,7 @@ start_time = time.time()
 ii = input_Chad
 
 # Harvest constants from user input
-EXO_FOLDER: Final[Path] = Path(ii.input_folder).expanduser()
+SOURCE_FOLDER: Final[Path] = Path(ii.source_folder).expanduser()
 DECOMP_FOLDER: Final[Path] = Path(ii.decomp_folder).expanduser()
 N_PROCESSORS: Final[int] = ii.n_processors
 HPC_RUN: Final[bool] = ii.hpc_run
@@ -65,13 +65,13 @@ if not DECOMP_FOLDER.exists():
     print(f"Created decomp folder: {DECOMP_FOLDER}")
 
 # Harvest all .exo files in the input folder
-exo_files = list(EXO_FOLDER.glob("*.exo"))
+exo_files = list(SOURCE_FOLDER.glob("*.exo"))
 if not exo_files:
-    raise ValueError(f"No .exo files found in {EXO_FOLDER}")
+    raise ValueError(f"No .exo files found in {SOURCE_FOLDER}")
 
-print(f"Number of .exo files found in {EXO_FOLDER}: {len(exo_files)}")
+print(f"Number of .exo files found in {SOURCE_FOLDER}: {len(exo_files)}")
 
-print(f"Input folder: {EXO_FOLDER}")
+print(f"Source folder: {SOURCE_FOLDER}")
 print(f"Decomp folder: {DECOMP_FOLDER}")
 
 print(f"Number of processors: {N_PROCESSORS}")
@@ -111,15 +111,15 @@ if HPC_RUN:
 
     for exo_file in exo_files:
         print("...")
+        # Print the source file being processed
+        print(f"Processing source: {exo_file}")
+
         # Create a subfolder in the decomp folder for each .exo file
         decomp_subfolder = DECOMP_FOLDER / exo_file.stem
         print(f"Decomp subfolder: {decomp_subfolder}")
 
         # Create the subfolder if it doesn't exist
         decomp_subfolder.mkdir(parents=True, exist_ok=True)
-
-        # Print the source file being processed
-        print(f"Processing source: {exo_file}")
 
         # Change into the decomp subfolder
         try:
@@ -131,11 +131,6 @@ if HPC_RUN:
         except Exception as e:
             print(f"Error changing directory to {decomp_subfolder}: {e}")
             raise
-
-        #     subprocess.run(["cd", str(decomp_subfolder)], check=True, shell=True)
-        # except subprocess.CalledProcessError as e:
-        #     print(f"Error changing directory to {decomp_subfolder}: {e}")
-        #     raise
 
         # Print the current working directory
         print(f"Current working directory: {Path.cwd()}")
@@ -165,15 +160,7 @@ if HPC_RUN:
             print(f"Error changing directory back to {DECOMP_FOLDER}: {e}")
             raise
 
-        # # Change back to the original directory
-        # try:
-        #     subprocess.run(["cd", str(DECOMP_FOLDER)], check=True, shell=True)
-        # except subprocess.CalledProcessError as e:
-        #     print(f"Error changing directory back to {DECOMP_FOLDER}: {e}")
-        #     raise
-
 end_time = time.time()
 delta_t = end_time - start_time
 print("Done.")
 print(f"Processed {len(exo_files)} file(s) in {delta_t:.2f} seconds.")
-#
