@@ -24,6 +24,7 @@ python ~/autotwin/autosim/src/autosim/ssm/mesh_to_sim.py
 """
 
 from pathlib import Path
+import os
 import subprocess
 import time
 from typing import NamedTuple, Final
@@ -79,7 +80,7 @@ print(f"Running on HPC: {HPC_RUN}")
 # If on the HPC, run the decomp command for each .exo file
 if HPC_RUN:
     # Load modules
-    print("Loading modules...")
+    # print("Loading modules...")
     # module_commands = [
     #     [
     #         "module",
@@ -109,6 +110,7 @@ if HPC_RUN:
     #         raise
 
     for exo_file in exo_files:
+        print("...")
         # Create a subfolder in the decomp folder for each .exo file
         decomp_subfolder = DECOMP_FOLDER / exo_file.stem
         print(f"Decomp subfolder: {decomp_subfolder}")
@@ -121,10 +123,19 @@ if HPC_RUN:
 
         # Change into the decomp subfolder
         try:
-            subprocess.run(["cd", str(decomp_subfolder)], check=True, shell=True)
-        except subprocess.CalledProcessError as e:
+            os.chdir(decomp_subfolder)
+            print(f"Changed directory to: {os.getcwd()}")
+        except FileNotFoundError:
+            print(f"Error: The directory {decomp_subfolder} does not exist.")
+            raise
+        except Exception as e:
             print(f"Error changing directory to {decomp_subfolder}: {e}")
             raise
+
+        #     subprocess.run(["cd", str(decomp_subfolder)], check=True, shell=True)
+        # except subprocess.CalledProcessError as e:
+        #     print(f"Error changing directory to {decomp_subfolder}: {e}")
+        #     raise
 
         # Print the current working directory
         print(f"Current working directory: {Path.cwd()}")
@@ -143,12 +154,23 @@ if HPC_RUN:
         # Run the command
         subprocess.run(decomp_command, check=True)
 
-        # Change back to the original directory
+        # Change pack to original directory
         try:
-            subprocess.run(["cd", str(DECOMP_FOLDER)], check=True, shell=True)
-        except subprocess.CalledProcessError as e:
+            os.chdir(DECOMP_FOLDER)
+            print(f"Changed directory back to: {os.getcwd()}")
+        except FileNotFoundError:
+            print(f"Error: The directory {DECOMP_FOLDER} does not exist.")
+            raise
+        except Exception as e:
             print(f"Error changing directory back to {DECOMP_FOLDER}: {e}")
             raise
+
+        # # Change back to the original directory
+        # try:
+        #     subprocess.run(["cd", str(DECOMP_FOLDER)], check=True, shell=True)
+        # except subprocess.CalledProcessError as e:
+        #     print(f"Error changing directory back to {DECOMP_FOLDER}: {e}")
+        #     raise
 
 end_time = time.time()
 delta_t = end_time - start_time
