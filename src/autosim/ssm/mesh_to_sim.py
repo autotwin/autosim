@@ -2,7 +2,22 @@
 simulation with SSM.
 
 Run:
+# If on HPC
+module purge
+module load aue/anaconda3/2024.06-1
+python --version  # Confirm Python 3.12
+
+# For all platforms
+cd ~/autotwin/autosim/
+
+# Create virtual environment if not already done
+python -m venv .venv
+
+# Activate the virtual environment
 source ~/autotwin/autosim/.venv/bin/activate
+
+pip install -e .
+
 python src/autosim/ssm/mesh_to_sim.py
 """
 
@@ -44,6 +59,7 @@ HPC_RUN: Final[bool] = ii.hpc_run
 # Create output folder if it doesn't exist
 if not DECOMP_FOLDER.exists():
     DECOMP_FOLDER.mkdir(parents=True, exist_ok=True)
+    print(f"Created decomp folder: {DECOMP_FOLDER}")
 
 # Harvest all .exo files in the input folder
 exo_files = list(EXO_FOLDER.glob("*.exo"))
