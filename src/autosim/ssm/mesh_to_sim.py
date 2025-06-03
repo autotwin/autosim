@@ -36,10 +36,10 @@ start_time = time.time()
 ii = input_Chad
 
 # Harvest constants from user input
-EXO_FOLDER: Final = Path(ii.input_folder).expanduser()
-DECOMP_FOLDER: Final = Path(ii.decomp_folder).expanduser()
-N_PROCESSORS: Final = ii.n_processors
-HPC_RUN: Final = ii.hpc_run
+EXO_FOLDER: Final[Path] = Path(ii.input_folder).expanduser()
+DECOMP_FOLDER: Final[Path] = Path(ii.decomp_folder).expanduser()
+N_PROCESSORS: Final[int] = ii.n_processors
+HPC_RUN: Final[bool] = ii.hpc_run
 
 # Create output folder if it doesn't exist
 if not DECOMP_FOLDER.exists():
@@ -60,23 +60,48 @@ print(f"Running on HPC: {HPC_RUN}")
 
 # If on the HPC, run the decomp command for each .exo file
 if HPC_RUN:
+    # Load modules
+    print("Loading modules...")
+    module_commands = [
+        [
+            "module",
+            "purge",
+        ],
+        [
+            "module",
+            "load",
+            "sierra",
+        ],
+        [
+            "module",
+            "load",
+            "seacase",
+        ],
+    ]
+
+    for module_command in module_commands:
+        # Print the command being run
+        print(f"Running command: {' '.join(module_command)}")
+
+        # Run the command
+        subprocess.run(module_command, check=True)
+
     for exo_file in exo_files:
         # Create a subfolder in the decomp folder for each .exo file
         # decomp_subfolder = DECOMP_FOLDER.joinpath(exo_file.stem)
         decomp_subfolder = DECOMP_FOLDER / exo_file.stem
         decomp_subfolder.mkdir(parents=True, exist_ok=True)
+        print(f"Processing {exo_file}...")
+        print(f"Decomp subfolder: {decomp_subfolder}")
 
         # Construct the decomp command
         decomp_command = [
             "decomp",
+            "--processors",
             str(exo_file),
-            "-n",
             str(N_PROCESSORS),
-            "-o",
             str(DECOMP_FOLDER / exo_file.stem),
         ]
-        if HPC_RUN:
-            decomp_command.append("--hpc")
 
         # Print the command being run
         print(f"Running command: {' '.join(decomp_command)}")

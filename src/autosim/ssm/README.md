@@ -53,7 +53,7 @@ step in the workflow.
 
 * Disadvantages:
   * Closed-source
-  * Slow-to-never responses to request for new capability
+  * New capability requests can be very challenging
   * Requires void inclusion
     * Bloats file size
     * Complicates SSM input deck (suppress block commands)
