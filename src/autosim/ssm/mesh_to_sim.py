@@ -6,6 +6,8 @@ Run:
 module purge
 module load aue/anaconda3/2024.06-1
 python --version  # Confirm Python 3.12
+module load sierra
+module load seacas
 
 # For all platforms
 cd ~/autotwin/autosim/
@@ -78,33 +80,33 @@ print(f"Running on HPC: {HPC_RUN}")
 if HPC_RUN:
     # Load modules
     print("Loading modules...")
-    module_commands = [
-        [
-            "module",
-            "purge",
-        ],
-        [
-            "module",
-            "load",
-            "sierra",
-        ],
-        [
-            "module",
-            "load",
-            "seacas",
-        ],
-    ]
+    # module_commands = [
+    #     [
+    #         "module",
+    #         "purge",
+    #     ],
+    #     [
+    #         "module",
+    #         "load",
+    #         "sierra",
+    #     ],
+    #     [
+    #         "module",
+    #         "load",
+    #         "seacas",
+    #     ],
+    # ]
 
-    for module_command in module_commands:
-        # Print the command being run
-        print(f"Running command: {' '.join(module_command)}")
+    # for module_command in module_commands:
+    #     # Print the command being run
+    #     print(f"Running command: {' '.join(module_command)}")
 
-        try:
-            # Run the command
-            subprocess.run(module_command, check=True)
-        except subprocess.CalledProcessError as e:
-            print(f"Error running command {' '.join(module_command)}: {e}")
-            raise
+    #     try:
+    #         # Run the command
+    #         subprocess.run(module_command, check=True)
+    #     except subprocess.CalledProcessError as e:
+    #         print(f"Error running command {' '.join(module_command)}: {e}")
+    #         raise
 
     for exo_file in exo_files:
         # Create a subfolder in the decomp folder for each .exo file
