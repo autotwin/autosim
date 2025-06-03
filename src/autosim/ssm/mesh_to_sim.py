@@ -18,7 +18,7 @@ source ~/autotwin/autosim/.venv/bin/activate
 
 pip install -e .
 
-python src/autosim/ssm/mesh_to_sim.py
+python ~/autotwin/autosim/src/autosim/ssm/mesh_to_sim.py
 """
 
 from pathlib import Path
@@ -33,7 +33,7 @@ class Input(NamedTuple):
     input_folder: str
     decomp_folder: str
     n_processors: int  # Number of processors for decomp
-    hpc_run: bool = False  # Run on HPC or not
+    hpc_run: bool = True  # Run on HPC or not
 
 
 # -------------------
@@ -66,7 +66,7 @@ exo_files = list(EXO_FOLDER.glob("*.exo"))
 if not exo_files:
     raise ValueError(f"No .exo files found in {EXO_FOLDER}")
 
-print(f"Found {len(exo_files)} .exo files in {EXO_FOLDER}")
+print(f"Number of .exo files found in {EXO_FOLDER}: {len(exo_files)}")
 
 print(f"Input folder: {EXO_FOLDER}")
 print(f"Decomp folder: {DECOMP_FOLDER}")
@@ -91,7 +91,7 @@ if HPC_RUN:
         [
             "module",
             "load",
-            "seacase",
+            "seacas",
         ],
     ]
 
@@ -99,8 +99,12 @@ if HPC_RUN:
         # Print the command being run
         print(f"Running command: {' '.join(module_command)}")
 
-        # Run the command
-        subprocess.run(module_command, check=True)
+        try:
+            # Run the command
+            subprocess.run(module_command, check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Error running command {' '.join(module_command)}: {e}")
+            raise
 
     for exo_file in exo_files:
         # Create a subfolder in the decomp folder for each .exo file
