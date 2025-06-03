@@ -112,11 +112,11 @@ if HPC_RUN:
     for exo_file in exo_files:
         print("...")
         # Print the source file being processed
-        print(f"Processing source: {exo_file}")
+        print(f"Processing source:\n  {exo_file}")
 
         # Create a subfolder in the decomp folder for each .exo file
         decomp_subfolder = DECOMP_FOLDER / exo_file.stem
-        print(f"Decomp subfolder: {decomp_subfolder}")
+        print(f"Decomp subfolder:\n  {decomp_subfolder}")
 
         # Create the subfolder if it doesn't exist
         decomp_subfolder.mkdir(parents=True, exist_ok=True)
@@ -124,7 +124,6 @@ if HPC_RUN:
         # Change into the decomp subfolder
         try:
             os.chdir(decomp_subfolder)
-            print(f"Changed directory to: {os.getcwd()}")
         except FileNotFoundError:
             print(f"Error: The directory {decomp_subfolder} does not exist.")
             raise
@@ -133,7 +132,7 @@ if HPC_RUN:
             raise
 
         # Print the current working directory
-        print(f"Current working directory: {Path.cwd()}")
+        print(f"Current working directory:\n  {Path.cwd()}")
 
         # Construct the decomp command
         decomp_command = [
@@ -144,7 +143,7 @@ if HPC_RUN:
         ]
 
         # Print the command being run
-        print(f"Running command: {' '.join(decomp_command)}")
+        print(f"Running command:\n  {' '.join(decomp_command)}")
 
         # Run the command
         subprocess.run(decomp_command, check=True)
@@ -152,7 +151,7 @@ if HPC_RUN:
         # Change pack to original directory
         try:
             os.chdir(DECOMP_FOLDER)
-            print(f"Changed directory back to: {os.getcwd()}")
+            print(f"Changed directory back to:\n  {os.getcwd()}")
         except FileNotFoundError:
             print(f"Error: The directory {DECOMP_FOLDER} does not exist.")
             raise
