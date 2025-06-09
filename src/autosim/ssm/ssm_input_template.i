@@ -5,6 +5,7 @@ begin sierra simulation_name
   # parent file: ~/autotwin/ssm/input/bob068/bob-1mm-5kg-helmet2-0305-hemi-068.i
   # parent file: ~/autotwin/ssm/input/a001/a001.i
   # parent file: ~/autotwin/ssm/input/sr4c.i
+  # parent file: ~/autotwin/ssm/input/IXI012-HH-1211-T1_small/ssm_input.i
 
   # ------------------------------------
   # units: grams, centimeters, seconds
@@ -66,10 +67,12 @@ begin sierra simulation_name
   # ---------------------------------------------------------------------------
   # materials: listed in alphabetical order
   # ---------
+  # Assumed 'ssm' repo cloned to path ~/autotwin/ssm parallel path to
+  # the, e.g., ~/scratch/ixi/sim/IXI012-HH-1211-T1_small/ folder
 
-  {include("../../material/bone.txt")}
-  {include("../../material/csf.txt")}
-  {include("../../material/whitematter.txt")}
+  {include("../../../autotwin/ssm/material/bone.txt")}
+  {include("../../../autotwin/ssm/material/csf.txt")}
+  {include("../../../autotwin/ssm/material/whitematter.txt")}
 
   begin rigid body rigidSkull
 
@@ -104,7 +107,8 @@ begin sierra simulation_name
     # database name = ../../geometry/sphere/sr2/spheres_resolution_2.exo
     # database name = ~/autotwin/ssm/geometry/sphere/sr2/spheres_resolution_2.exo
     # database name = ../../geometry/sr4c/conf_0.1cm.g
-    database name = ../../geometry/ixi/IXI012-HH-1211-T1_small/IXI012-HH-1211-T1_small.exo
+    # database name = ../../geometry/ixi/IXI012-HH-1211-T1_small/IXI012-HH-1211-T1_small.exo
+    # DATABASE_NAME
     database type = exodusII
 
     # ---------------
@@ -166,11 +170,12 @@ begin sierra simulation_name
       # termination time = 0.008 # second
       # termination time = 0.010 # second
       # termination time = 0.012 # second
-      termination time = 0.020 # second
+      # termination time = 0.020 # second
       # termination time = 0.025 # second
       # termination time = 0.035 # second
       # termination time = 0.040 # second
       # termination time = 0.100 # second
+      # TERMINATION_TIME
 
     end time control
 
