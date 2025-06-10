@@ -34,9 +34,9 @@ from typing import NamedTuple, Final
 class Input(NamedTuple):
     """Input class for the mesh_to_sim.py script."""
 
-    source_folder: str
-    decomp_folder: str
-    sim_folder: str  # Folder for simulation input files
+    exo_folder: str
+    # decomp_folder: str
+    ssm_folder: str  # Folder for ssm simulation input files
     n_processors: int  # Number of processors for mesh decomposition
     mesh_decompose: bool  # Whether to decompose the mesh
     run_sims: bool  # Whether to run simulations
@@ -47,9 +47,9 @@ class Input(NamedTuple):
 # user settings begin
 # -------------------
 input_Chad = Input(
-    source_folder="~/scratch/ixi/exo/",  # Start point is the mesh folder
-    decomp_folder="~/scratch/ixi/decomp/",  # Next, meshes get decomposed into decomp folder
-    sim_folder="~/scratch/ixi/sim/",  # Next, input files get populated in sim folder
+    exo_folder="~/scratch/ixi/exo/",  # Start point is this folder, followed by decomposition
+    # decomp_folder="~/scratch/ixi/decomp/",  # Next, meshes get decomposed into decomp folder
+    ssm_folder="~/scratch/ixi/ssm/",  # Next, input files get populated in this folder
     n_processors=160,  # Number of processors for mesh decomposition
     mesh_decompose=False,
     run_sims=True,
@@ -62,37 +62,35 @@ start_time = time.time()
 ii = input_Chad
 
 # Harvest constants from user input
-SOURCE_FOLDER: Final[Path] = Path(ii.source_folder).expanduser()
-DECOMP_FOLDER: Final[Path] = Path(ii.decomp_folder).expanduser()
-SIM_FOLDER: Final[Path] = Path(ii.sim_folder).expanduser()
+EXO_FOLDER: Final[Path] = Path(ii.exo_folder).expanduser()
+# DECOMP_FOLDER: Final[Path] = Path(ii.decomp_folder).expanduser()
+SSM_FOLDER: Final[Path] = Path(ii.ssm_folder).expanduser()
 N_PROCESSORS: Final[int] = ii.n_processors
 DECOMP: Final[bool] = ii.mesh_decompose
 RUN_SIMS: Final[bool] = ii.run_sims
 TERMINATION_TIME: Final[float] = ii.termination_time
 
 # Process all .exo files in the input folder
-if not SOURCE_FOLDER.exists():
-    print(f"Error: Non-existent folder: {SOURCE_FOLDER}")
+if not EXO_FOLDER.exists():
+    print(f"Error: Non-existent folder: {EXO_FOLDER}")
     sys.exit(1)  # Exit the program with a non-zero status
 
-exo_files = list(SOURCE_FOLDER.glob("*.exo"))
+exo_files = list(EXO_FOLDER.glob("*.exo"))
 if not exo_files:
-    raise ValueError(f"No .exo files found in {SOURCE_FOLDER}")
+    raise ValueError(f"No .exo files found in {EXO_FOLDER}")
 
-print(f"Number of .exo files found in {SOURCE_FOLDER}: {len(exo_files)}")
-
-print(f"Source folder: {SOURCE_FOLDER}")
+print(f"Number of .exo files found in {EXO_FOLDER}: {len(exo_files)}")
 
 if DECOMP:
     print("Decomposing mesh files...")
-
-    # Create output folder if it doesn't exist
-    if not DECOMP_FOLDER.exists():
-        DECOMP_FOLDER.mkdir(parents=True, exist_ok=True)
-        print(f"Created decomp folder: {DECOMP_FOLDER}")
-
-    print(f"Decomp folder: {DECOMP_FOLDER}")
     print(f"Number of processors: {N_PROCESSORS}")
+
+    # # Create output folder if it doesn't exist
+    # if not DECOMP_FOLDER.exists():
+    #     DECOMP_FOLDER.mkdir(parents=True, exist_ok=True)
+    #     print(f"Created decomp folder: {DECOMP_FOLDER}")
+
+    # print(f"Decomp folder: {DECOMP_FOLDER}")
 
     for exo_file in exo_files:
         print("...")
@@ -100,15 +98,32 @@ if DECOMP:
         print(f"Processing source:\n  {exo_file}")
 
         # Create a subfolder in the decomp folder for each .exo file
-        decomp_subfolder = DECOMP_FOLDER / exo_file.stem
+        decomp_subfolder = EXO_FOLDER / exo_file.stem
         print(f"Decomp subfolder:\n  {decomp_subfolder}")
 
         # Create the subfolder if it doesn't exist
         decomp_subfolder.mkdir(parents=True, exist_ok=True)
 
+        # Move the .exo file into subfolder
+        source_file = EXO_FOLDER / exo_file.name
+        destination_file = decomp_subfolder / exo_file.name
+        try:
+            if not destination_file.exists():
+                source_file.rename(destination_file)
+                print(f"Moved {source_file} to {destination_file}")
+            else:
+                print(f"File {destination_file} already exists, skipping move.")
+        except FileNotFoundError:
+            print(f"Error: The file {source_file} does not exist.")
+            raise
+        except Exception as e:
+            print(f"Error moving file: {e}")
+            raise
+
         # Change into the decomp subfolder
         try:
             os.chdir(decomp_subfolder)
+
         except FileNotFoundError:
             print(f"Error: The directory {decomp_subfolder} does not exist.")
             raise
@@ -142,13 +157,13 @@ if DECOMP:
 
         # Change pack to original directory
         try:
-            os.chdir(DECOMP_FOLDER)
+            os.chdir(EXO_FOLDER)
             print(f"Changed directory back to:\n  {os.getcwd()}")
         except FileNotFoundError:
-            print(f"Error: The directory {DECOMP_FOLDER} does not exist.")
+            print(f"Error: The directory {EXO_FOLDER} does not exist.")
             raise
         except Exception as e:
-            print(f"Error changing directory back to {DECOMP_FOLDER}: {e}")
+            print(f"Error changing directory back to {EXO_FOLDER}: {e}")
             raise
 
     end_time = time.time()
@@ -162,28 +177,28 @@ if RUN_SIMS:
     print("Running simulations...")
 
     # Create output folder if it doesn't exist
-    if not SIM_FOLDER.exists():
-        SIM_FOLDER.mkdir(parents=True, exist_ok=True)
-        print(f"Created sim folder: {SIM_FOLDER}")
+    if not SSM_FOLDER.exists():
+        SSM_FOLDER.mkdir(parents=True, exist_ok=True)
+        print(f"Created sim folder: {SSM_FOLDER}")
 
-    print(f"Sim folder: {SIM_FOLDER}")
+    print(f"ssm folder: {SSM_FOLDER}")
 
     for exo_file in exo_files:
         # Create a subfolder in the sim folder for each .exo file
-        sim_subfolder = SIM_FOLDER / exo_file.stem
-        print(f"Sim subfolder:\n  {sim_subfolder}")
+        ssm_subfolder = SSM_FOLDER / exo_file.stem
+        print(f"Sim subfolder:\n  {ssm_subfolder}")
 
         # Create the subfolder if it doesn't exist
-        sim_subfolder.mkdir(parents=True, exist_ok=True)
+        ssm_subfolder.mkdir(parents=True, exist_ok=True)
 
         # Change into the sim subfolder
         try:
-            os.chdir(sim_subfolder)
+            os.chdir(ssm_subfolder)
         except FileNotFoundError:
-            print(f"Error: The directory {sim_subfolder} does not exist.")
+            print(f"Error: The directory {ssm_subfolder} does not exist.")
             raise
         except Exception as e:
-            print(f"Error changing directory to {sim_subfolder}: {e}")
+            print(f"Error changing directory to {ssm_subfolder}: {e}")
             raise
 
         # Print the current working directory
@@ -193,13 +208,13 @@ if RUN_SIMS:
         ssm_command = [
             "cp",
             str((Path(__file__).resolve()).parent / "ssm_input_template.i"),
-            str(sim_subfolder / "ssm_input.i"),
+            str(ssm_subfolder / "ssm_input.i"),
         ]
 
         # Run the command to copy the template file
         result = subprocess.run(ssm_command, check=True)
         if result.returncode == 0:
-            print(f"Copied template to:\n  {sim_subfolder / 'ssm_input.i'}")
+            print(f"Copied template to:\n  {ssm_subfolder / 'ssm_input.i'}")
         else:
             print("Failed to copy template file.")
             print(result.stderr)
@@ -216,7 +231,7 @@ if RUN_SIMS:
         }
 
         # Read the contents of the input file
-        with open(sim_subfolder / "ssm_input.i", "r") as file:
+        with open(ssm_subfolder / "ssm_input.i", "r") as file:
             content = file.read()
 
         # Replace the placeholders with actual values
@@ -231,12 +246,11 @@ if RUN_SIMS:
         modified_content = "\n".join(cc)
 
         # Write the modified content back to the file
-        with open(sim_subfolder / "ssm_input.i", "w") as file:
+        with open(ssm_subfolder / "ssm_input.i", "w") as file:
             file.write(modified_content)
 
-        print(f"Created ssm input file:\n  {sim_subfolder / 'ssm_input.i'}")
+        print(f"Created ssm input file:\n  {ssm_subfolder / 'ssm_input.i'}")
 
 
 else:
     print("Skipping simulation runs.")
-
