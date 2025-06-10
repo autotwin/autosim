@@ -51,7 +51,7 @@ input_Chad = Input(
     n_processors=160,  # Number of processors for mesh decomposition
     mesh_decompose=False,
     run_sims=True,
-    termination_time=0.0001,  # Termination time in seconds
+    termination_time=0.002,  # Termination time in seconds
 )
 # -----------------
 # user settings end
@@ -175,8 +175,6 @@ if RUN_SIMS:
 
     exo_folders = list(EXO_FOLDER.glob("*/"))  # Get all subfolders in the EXO_FOLDER
 
-    breakpoint()
-
     for exo_folder in exo_folders:
         # Create a subfolder in the sim folder for each .exo file
         ssm_subfolder = SSM_FOLDER / exo_folder.stem
@@ -292,6 +290,11 @@ if RUN_SIMS:
         os.chmod(ssm_subfolder / "submit_script.sh", 0o755)  # chmod +x submit_script.sh
 
         print(f"Created submit_script file:\n  {ssm_subfolder / 'submit_script.sh'}")
+
+        # Spawn the process without waiting for it to complete
+        subprocess.Popen(["./" + str(ssm_subfolder / "submit_script.sh")])
+
+    print("All submit scripts have been spawned.")
 
 else:
     print("Skipping simulation runs.")
