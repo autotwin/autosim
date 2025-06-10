@@ -35,7 +35,6 @@ class Input(NamedTuple):
     """Input class for the mesh_to_sim.py script."""
 
     exo_folder: str
-    # decomp_folder: str
     ssm_folder: str  # Folder for ssm simulation input files
     n_processors: int  # Number of processors for mesh decomposition
     mesh_decompose: bool  # Whether to decompose the mesh
@@ -48,7 +47,6 @@ class Input(NamedTuple):
 # -------------------
 input_Chad = Input(
     exo_folder="~/scratch/ixi/exo/",  # Start point is this folder, followed by decomposition
-    # decomp_folder="~/scratch/ixi/decomp/",  # Next, meshes get decomposed into decomp folder
     ssm_folder="~/scratch/ixi/ssm/",  # Next, input files get populated in this folder
     n_processors=160,  # Number of processors for mesh decomposition
     mesh_decompose=False,
@@ -63,36 +61,26 @@ ii = input_Chad
 
 # Harvest constants from user input
 EXO_FOLDER: Final[Path] = Path(ii.exo_folder).expanduser()
-# DECOMP_FOLDER: Final[Path] = Path(ii.decomp_folder).expanduser()
 SSM_FOLDER: Final[Path] = Path(ii.ssm_folder).expanduser()
 N_PROCESSORS: Final[int] = ii.n_processors
 DECOMP: Final[bool] = ii.mesh_decompose
 RUN_SIMS: Final[bool] = ii.run_sims
 TERMINATION_TIME: Final[float] = ii.termination_time
 
-# Process all .exo files in the input folder
 if not EXO_FOLDER.exists():
     print(f"Error: Non-existent folder: {EXO_FOLDER}")
     sys.exit(1)  # Exit the program with a non-zero status
 
-exo_files = list(EXO_FOLDER.glob("*.exo"))
-if not exo_files:
-    raise ValueError(f"No .exo files found in {EXO_FOLDER}")
-
-print(f"Number of .exo files found in {EXO_FOLDER}: {len(exo_files)}")
-
 if DECOMP:
+    # Process all .exo files in the input folder
+    exo_files = list(EXO_FOLDER.glob("*.exo"))
+    if not exo_files:
+        raise ValueError(f"No .exo files found in {EXO_FOLDER}")
+
+    print(f"Number of .exo files found in {EXO_FOLDER}: {len(exo_files)}")
+
     print("Decomposing mesh files...")
     print(f"Number of processors: {N_PROCESSORS}")
-
-    # # Create output folder if it doesn't exist
-    # if not DECOMP_FOLDER.exists():
-    #     DECOMP_FOLDER.mkdir(parents=True, exist_ok=True)
-    #     print(f"Created decomp folder: {DECOMP_FOLDER}")
-
-    # print(f"Decomp folder: {DECOMP_FOLDER}")
-
-    breakpoint()
 
     for exo_file in exo_files:
         print("...")
@@ -185,9 +173,13 @@ if RUN_SIMS:
 
     print(f"ssm folder: {SSM_FOLDER}")
 
-    for exo_file in exo_files:
+    exo_folders = list(EXO_FOLDER.glob("*/"))  # Get all subfolders in the EXO_FOLDER
+
+    breakpoint()
+
+    for exo_folder in exo_folders:
         # Create a subfolder in the sim folder for each .exo file
-        ssm_subfolder = SSM_FOLDER / exo_file.stem
+        ssm_subfolder = SSM_FOLDER / exo_folder
         print(f"Sim subfolder:\n  {ssm_subfolder}")
 
         # Create the subfolder if it doesn't exist
@@ -223,9 +215,9 @@ if RUN_SIMS:
 
         replacements = {
             "# DATABASE_NAME": "database name = ../../exo/"
-            + str(exo_file.stem)
+            + str(exo_folder)
             + "/"
-            + str(exo_file.stem)
+            + str(exo_folder)
             + ".exo",
             "# TERMINATION_TIME": "termination time = "
             + str(TERMINATION_TIME)
