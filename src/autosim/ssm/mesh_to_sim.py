@@ -250,14 +250,14 @@ if RUN_SIMS:
         # -----------------------------------------
         # Create the unique submit_script bash file
         # -----------------------------------------
-        ssm_command = [
+        submit_script_command = [
             "cp",
             str((Path(__file__).resolve()).parent / "submit_script_template.sh"),
             str(ssm_subfolder / "submit_script.sh"),
         ]
 
         # Run the command to copy the template file
-        result = subprocess.run(ssm_command, check=True)
+        result = subprocess.run(submit_script_command, check=True)
         if result.returncode == 0:
             print(f"Copied template to:\n  {ssm_subfolder / 'submit_script.sh'}")
         else:
@@ -287,6 +287,9 @@ if RUN_SIMS:
         # Write the modified content back to the file
         with open(ssm_subfolder / "submit_script.sh", "w") as file:
             file.write(modified_content)
+
+        # Make the submit_script executable
+        os.chmod(ssm_subfolder / "submit_script.sh", 0o755)  # chmod +x submit_script.sh
 
         print(f"Created submit_script file:\n  {ssm_subfolder / 'submit_script.sh'}")
 
