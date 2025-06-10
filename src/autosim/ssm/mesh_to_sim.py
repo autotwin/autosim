@@ -252,16 +252,14 @@ if RUN_SIMS:
         # -----------------------------------------
         ssm_command = [
             "cp",
-            str((Path(__file__).resolve()).parent / "submit_script.sh"),
+            str((Path(__file__).resolve()).parent / "submit_script_template.sh"),
             str(ssm_subfolder / "submit_script.sh"),
         ]
 
         # Run the command to copy the template file
         result = subprocess.run(ssm_command, check=True)
         if result.returncode == 0:
-            print(
-                f"Copied template to:\n  {ssm_subfolder / 'submit_script_template.sh'}"
-            )
+            print(f"Copied template to:\n  {ssm_subfolder / 'submit_script.sh'}")
         else:
             print("Failed to copy template file.")
             print(result.stderr)
