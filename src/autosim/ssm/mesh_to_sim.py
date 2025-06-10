@@ -92,6 +92,8 @@ if DECOMP:
 
     # print(f"Decomp folder: {DECOMP_FOLDER}")
 
+    breakpoint()
+
     for exo_file in exo_files:
         print("...")
         # Print the source file being processed
@@ -139,7 +141,7 @@ if DECOMP:
             "decomp",
             "--processors",
             str(N_PROCESSORS),
-            str(exo_file),
+            str(destination_file),
         ]
 
         # Print the command being run
@@ -220,7 +222,7 @@ if RUN_SIMS:
             print(result.stderr)
 
         replacements = {
-            "# DATABASE_NAME": "database name = ../../decomp/"
+            "# DATABASE_NAME": "database name = ../../exo/"
             + str(exo_file.stem)
             + "/"
             + str(exo_file.stem)
