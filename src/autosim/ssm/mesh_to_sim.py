@@ -205,7 +205,7 @@ if RUN_SIMS:
             print(result.stderr)
 
         replacements = {
-            "# DATABASE_NAME": "../../decomp/"
+            "# DATABASE_NAME": "database name = ../../decomp/"
             + str(exo_file.stem)
             + "/"
             + str(exo_file.stem)
