@@ -179,7 +179,7 @@ if RUN_SIMS:
 
     for exo_folder in exo_folders:
         # Create a subfolder in the sim folder for each .exo file
-        ssm_subfolder = SSM_FOLDER / exo_folder
+        ssm_subfolder = SSM_FOLDER / exo_folder.stem
         print(f"Sim subfolder:\n  {ssm_subfolder}")
 
         # Create the subfolder if it doesn't exist
@@ -215,9 +215,9 @@ if RUN_SIMS:
 
         replacements = {
             "# DATABASE_NAME": "database name = ../../exo/"
-            + str(exo_folder)
+            + str(exo_folder.stem)
             + "/"
-            + str(exo_folder)
+            + str(exo_folder.stem)
             + ".exo",
             "# TERMINATION_TIME": "termination time = "
             + str(TERMINATION_TIME)
