@@ -198,7 +198,9 @@ if RUN_SIMS:
         # Print the current working directory
         print(f"Current working directory:\n  {Path.cwd()}")
 
+        # --------------------------------
         # Create the unique ssm input file
+        # --------------------------------
         ssm_command = [
             "cp",
             str((Path(__file__).resolve()).parent / "ssm_input_template.i"),
@@ -214,12 +216,12 @@ if RUN_SIMS:
             print(result.stderr)
 
         replacements = {
-            "# DATABASE_NAME": "database name = ../../exo/"
+            "# [DATABASE_NAME]": "database name = ../../exo/"
             + str(exo_folder.stem)
             + "/"
             + str(exo_folder.stem)
             + ".exo",
-            "# TERMINATION_TIME": "termination time = "
+            "# [TERMINATION_TIME]": "termination time = "
             + str(TERMINATION_TIME)
             + "  # seconds",
         }
@@ -245,6 +247,48 @@ if RUN_SIMS:
 
         print(f"Created ssm input file:\n  {ssm_subfolder / 'ssm_input.i'}")
 
+        # -----------------------------------------
+        # Create the unique submit_script bash file
+        # -----------------------------------------
+        ssm_command = [
+            "cp",
+            str((Path(__file__).resolve()).parent / "submit_script.sh"),
+            str(ssm_subfolder / "submit_script.sh"),
+        ]
+
+        # Run the command to copy the template file
+        result = subprocess.run(ssm_command, check=True)
+        if result.returncode == 0:
+            print(f"Copied template to:\n  {ssm_subfolder / 'submit_script.sh'}")
+        else:
+            print("Failed to copy template file.")
+            print(result.stderr)
+
+        # Create a submit_script bash file
+        replacements = {
+            "# [PROCS]": "PROCS=" + str(N_PROCESSORS),
+        }  # overwrite
+
+        # Read the contents of the submit_script file
+        with open(ssm_subfolder / "submit_script.sh", "r") as file:
+            content = file.read()
+
+        # Replace the placeholders with actual values
+        cc = content.split("\n")
+        for i, line in enumerate(cc):
+            for key, value in replacements.items():
+                if key in line:
+                    line = line.replace(key, value)
+                    cc[i] = line
+                    print(f"Replaced '{key}' with '{value}' in line {i + 1}")
+
+        modified_content = "\n".join(cc)
+
+        # Write the modified content back to the file
+        with open(ssm_subfolder / "submit_script.sh", "w") as file:
+            file.write(modified_content)
+
+        print(f"Created submit_script file:\n  {ssm_subfolder / 'submit_script.sh'}")
 
 else:
     print("Skipping simulation runs.")

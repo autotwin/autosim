@@ -108,7 +108,7 @@ begin sierra simulation_name
     # database name = ~/autotwin/ssm/geometry/sphere/sr2/spheres_resolution_2.exo
     # database name = ../../geometry/sr4c/conf_0.1cm.g
     # database name = ../../geometry/ixi/IXI012-HH-1211-T1_small/IXI012-HH-1211-T1_small.exo
-    # DATABASE_NAME
+    # [DATABASE_NAME]
     database type = exodusII
 
     # ---------------
@@ -175,7 +175,7 @@ begin sierra simulation_name
       # termination time = 0.035 # second
       # termination time = 0.040 # second
       # termination time = 0.100 # second
-      # TERMINATION_TIME
+      # [TERMINATION_TIME]
 
     end time control
 
