@@ -286,13 +286,13 @@ if RUN_SIMS:
         with open(ssm_subfolder / "submit_script.sh", "w") as file:
             file.write(modified_content)
 
+        print(f"Created submit_script file:\n  {ssm_subfolder / 'submit_script.sh'}")
+
         # Make the submit_script executable
         os.chmod(ssm_subfolder / "submit_script.sh", 0o755)  # chmod +x submit_script.sh
 
-        print(f"Created submit_script file:\n  {ssm_subfolder / 'submit_script.sh'}")
-
         # Spawn the process without waiting for it to complete
-        subprocess.Popen(["./" + str(ssm_subfolder / "submit_script.sh")])
+        subprocess.Popen(["." + str(ssm_subfolder / "submit_script.sh")])
 
     print("All submit scripts have been spawned.")
 
