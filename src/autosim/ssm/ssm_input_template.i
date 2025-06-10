@@ -47,7 +47,7 @@ begin sierra simulation_name
   # user functions 
   # --------------
 
-  {include("../../bcs/shell_rotation.txt")}
+  {include("../../../../autotwin/ssm/bcs/shell_rotation.txt")}
 
   # -------------------------------
   # Define using named vector components
@@ -70,9 +70,9 @@ begin sierra simulation_name
   # Assumed 'ssm' repo cloned to path ~/autotwin/ssm parallel path to
   # the, e.g., ~/scratch/ixi/sim/IXI012-HH-1211-T1_small/ folder
 
-  {include("../../../autotwin/ssm/material/bone.txt")}
-  {include("../../../autotwin/ssm/material/csf.txt")}
-  {include("../../../autotwin/ssm/material/whitematter.txt")}
+  {include("../../../../autotwin/ssm/material/bone.txt")}
+  {include("../../../../autotwin/ssm/material/csf.txt")}
+  {include("../../../../autotwin/ssm/material/whitematter.txt")}
 
   begin rigid body rigidSkull
 

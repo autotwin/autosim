@@ -47,9 +47,9 @@ class Input(NamedTuple):
 # user settings begin
 # -------------------
 input_Chad = Input(
-    source_folder="~/scratch/ixi/exo/",
-    decomp_folder="~/scratch/ixi/decomp/",
-    sim_folder="~/scratch/ixi/sim/",
+    source_folder="~/scratch/ixi/exo/",  # Start point is the mesh folder
+    decomp_folder="~/scratch/ixi/decomp/",  # Next, meshes get decomposed into decomp folder
+    sim_folder="~/scratch/ixi/sim/",  # Next, input files get populated in sim folder
     n_processors=160,  # Number of processors for mesh decomposition
     mesh_decompose=False,
     run_sims=True,
@@ -215,8 +215,6 @@ if RUN_SIMS:
             + "  # seconds",
         }
 
-        breakpoint()
-
         # Read the contents of the input file
         with open(sim_subfolder / "ssm_input.i", "r") as file:
             content = file.read()
@@ -230,7 +228,6 @@ if RUN_SIMS:
                     cc[i] = line
                     print(f"Replaced '{key}' with '{value}' in line {i + 1}")
 
-        breakpoint()
         modified_content = "\n".join(cc)
 
         # Write the modified content back to the file
@@ -242,3 +239,4 @@ if RUN_SIMS:
 
 else:
     print("Skipping simulation runs.")
+
