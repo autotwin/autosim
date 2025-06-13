@@ -13,8 +13,8 @@ import connectorBehavior
 from odbAccess import openOdb
 
 # === Set input path ===
-save_path = "simulation_results/example1/"
-odb_path = "simulation_results/example1/example1.odb"
+save_path = "simulation_results/htp_v16/"
+odb_path = "simulation_results/htp_v16/htp_v16.odb"
 print "Opening ODB file:", odb_path
 
 # === Open ODB and assign to viewport
@@ -56,7 +56,7 @@ session.viewports['Viewport: 1'].odbDisplay.displayGroup.remove(leaf=leaf)
 
 # === Set contour limits and out-of-bounds color
 session.viewports['Viewport: 1'].odbDisplay.contourOptions.setValues(
-    maxAutoCompute=OFF, maxValue=0.3, minAutoCompute=OFF, minValue=0.00)
+    maxAutoCompute=OFF, maxValue=1.0, minAutoCompute=OFF, minValue=0.00)
 session.viewports['Viewport: 1'].odbDisplay.contourOptions.setValues(
     outsideLimitsAboveColor='#800000')
 

@@ -11,3 +11,5 @@ module load simulia/2022
 abaqus cae noGUI=postproc/contour_visualization.py
 
 abaqus python postproc/strain_rate_vs_strain.py
+
+abaqus cae noGUI=postproc/abaqusMacros_fig.py

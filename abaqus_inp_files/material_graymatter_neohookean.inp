@@ -1,0 +1,7 @@
+*Material, name=GRAYMATTER
+*Density
+1040.,
+*Hyperelastic, neo hooke, moduli=LONG TERM
+3200., 9.132e-10
+*Viscoelastic, time=PRONY
+ 0.8118,     0., 0.0014

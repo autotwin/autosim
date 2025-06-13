@@ -3,12 +3,16 @@
 ** 
 *Step, name=Step-1, nlgeom=YES
 ** Enable nonlinear geometry (large deformation effects).
+** ORIGINAL CODE: Dynamic, Explicit
+**Dynamic, Explicit, scale factor=0.1
 *Dynamic, Explicit
 0.0, 0.08
 ** Run this explicit step for 0.08 seconds total time.
 **
 *Bulk Viscosity
 0.06, 1.2
+** 0.1, 2.0
+** TYPICAL: 0.06, 1.2
 ** Add numerical bulk viscosity to suppress spurious high-frequency oscillations.
 ** These are standard damping parameters for explicit simulations.
 ** 

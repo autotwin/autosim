@@ -26,9 +26,11 @@ build/
 *.sh.o*
 *.sh.e*
 
-# Ignore everything in simulation results
+# Ignore everything in simulation results, meshes, segmented arrays
 simulation_results/
 abaqus_mesh/
+ensemble_npy_arrays/
+
 # Not sure what this is: 
 abaqus.rpy*
 

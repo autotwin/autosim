@@ -1,0 +1,11 @@
+*Heading
+*Preprint, echo=NO, model=NO, history=NO, contact=NO
+*Part, name=PART-1
+*INCLUDE, INPUT=@MESHFILE@
+*End Part
+*INCLUDE, INPUT=../../abaqus_inp_files/assembly.inp
+*INCLUDE, INPUT=../../abaqus_inp_files/loads.inp
+*INCLUDE, INPUT=../../abaqus_inp_files/material_csf.inp
+*INCLUDE, INPUT=../../abaqus_inp_files/material_graymatter_neohookean.inp
+*INCLUDE, INPUT=../../abaqus_inp_files/material_skull.inp
+*INCLUDE, INPUT=../../abaqus_inp_files/step_case1.inp
