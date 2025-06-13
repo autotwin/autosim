@@ -22,6 +22,16 @@ dist/
 build/
 *.egg
 
+# Ignore bash script output
+*.sh.o*
+*.sh.e*
+
+# Ignore everything in simulation results
+simulation_results/
+abaqus_mesh/
+# Not sure what this is: 
+abaqus.rpy*
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
