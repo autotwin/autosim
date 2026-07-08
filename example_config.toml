@@ -1,0 +1,21 @@
+[env]
+automesh = "/path/to/automesh"
+abaqus   = "/path/to/abaqus"
+
+[run]
+npy_file = "/path/to/U01_HJF_0001_01-NR-synthseg-heterogeneous-membranesON-combined.npy"
+mat_path = "/path/to/U01_HJF_0001_01_NR.mat"
+output_dir = "/path/to/output/U01_HJF_0001_01-NR-synthseg-heterogeneous-membranesON-menichetti"
+material_model = "menichetti"
+csf_model = "fluid"
+ref_dof = 6
+time_interval_step = 0.002
+
+# Optional. HPC job submission (SGE/qsub). Defaults below match BU SCC —
+# override if you're on a different cluster/institution.
+# n_cpus = 16
+# h_rt = "12:00:00"
+# mem_per_core = "4G"
+# env_setup_script = "/ad/eng/bin/engenv.sh"
+# simulia_module = "simulia/2025"
+# intel_module = "intel/2024.0"

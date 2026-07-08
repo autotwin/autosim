@@ -1,0 +1,68 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Distribution / packaging
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.cache
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+nosetests.xml
+
+# Abaqus job artifacts (generated per-run, never source)
+*.odb
+*.dat
+*.sta
+*.msg
+*.com
+*.prt
+*.sim
+*.res
+*.stt
+*.lck
+*.pac
+*.mdl
+*.log
+*.log.o*
+*.log.e*
+*.sh.o*
+*.sh.e*
+abaqus.rpy*
+
+# User-generated run artifacts (configs/logs/results are instance-specific,
+# not part of the shipped software)
+configs/
+logs/
+*_Results/
+
+# macOS / Windows
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editors
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace

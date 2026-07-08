@@ -1,0 +1,29 @@
+[project]
+name = "autosim"
+version = "0.1.0"
+authors = [
+  { name="Evangelos Apostolakis", email="evanapos@bu.edu" },
+  { name="Rika Carlsen", email="carlsen@rmu.edu" },
+  { name="Chad Hovey", email="chovey@sandia.gov" },
+  { name="Emma Lejeune", email="elejeune@bu.edu" },
+  { name="Anastasia Tzoumaka", email="tzoumaka@rmu.edu" },
+  { name="Anu Tripathy", email="tripathia@rmu.edu" },
+]
+description = "autotwin brain biomechanics FE simulation pipeline (Abaqus/Explicit)"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=2.0.2",
+    "scipy>=1.13",
+    "nibabel>=5.2",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.1.1",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pipeline*"]
+
+[tool.ruff]
+line-length = 79
