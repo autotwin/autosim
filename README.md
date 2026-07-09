@@ -16,7 +16,7 @@ Given a segmentation `.npy` file and a kinematics `.mat` file, `autosim`:
    conditions, loads, assembly, and output requests
 3. Submits the job to an HPC scheduler (SGE by default)
 
-Full documentation: [autotwin.github.io/AutoSim](https://autotwin.github.io/AutoSim)
+Full documentation: [autotwin.github.io/autosim](https://autotwin.github.io/autosim)
 
 ## Material models
 

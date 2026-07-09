@@ -12,8 +12,8 @@
 Clone the repository and install in editable mode:
 
 ```bash
-git clone https://github.com/autotwin/AutoSim.git
-cd AutoSim
+git clone https://github.com/autotwin/autosim.git
+cd autosim
 pip install -e .
 ```
 
@@ -33,4 +33,4 @@ pytest tests/
 
 ## HPC environment
 
-autosim submits Abaqus jobs via SGE (`qsub`) by default. The submit script it generates sources an environment setup script and loads scheduler modules before running Abaqus — these default to BU SCC's environment but are fully overridable per config (see [HPC](hpc.md)). No special installation step is needed beyond having Abaqus itself reachable on your cluster's compute nodes.
+autosim submits Abaqus jobs via SGE (`qsub`) by default. The submit script it generates sources an environment setup script and loads scheduler modules before running Abaqus — these default to Boston University Shared Computing Cluster's environment but are fully overridable per config (see [HPC](hpc.md)). No special installation step is needed beyond having Abaqus itself reachable on your cluster's compute nodes.
