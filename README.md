@@ -43,7 +43,8 @@ python run_pipeline.py --config my_config.toml
 This meshes the subject, writes the `.inp` deck to `output_dir`, and submits
 the Abaqus job via `qsub`. See `example_config.toml` for all available
 fields — HPC scheduler settings (cores, walltime, module names) are optional
-and default to BU SCC's environment; override them for your own cluster.
+and default to Boston University Shared Computing Cluster's environment;
+override them for your own cluster.
 
 ## Running tests
 

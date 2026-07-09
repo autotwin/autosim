@@ -175,9 +175,10 @@ def run_abaqus(config: Config):
 
     intel_module = f"module load {config.intel_module}" if config.vumat_path else ""
 
-    # NOTE: This submit script targets SGE (qsub/#$) and BU SCC's module
-    # environment. Other institutions will likely need to adapt the
-    # scheduler directives below for their own system (e.g. Slurm/PBS).
+    # NOTE: This submit script targets SGE (qsub/#$) and Boston University
+    # Shared Computing Cluster's module environment. Other institutions will
+    # likely need to adapt the scheduler directives below for their own
+    # system (e.g. Slurm/PBS).
     submit_script = out / "submit.sh"
     submit_script.write_text(f"""\
 #!/bin/bash -l
