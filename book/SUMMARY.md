@@ -7,3 +7,4 @@
 - [Installation](installation.md)
 - [Quick Start](quick_start.md)
 - [Material Models](materials/README.md)
+  - [Brain](materials/brain.md)
