@@ -1,0 +1,17 @@
+[book]
+title = "autosim"
+description = "Brain biomechanics finite element simulation pipeline (Abaqus/Explicit)."
+language = "en"
+src = "book/"
+
+[build]
+build-dir = "book/build/"
+create-missing = false
+
+[output.html]
+git-repository-url = "https://github.com/autotwin/AutoSim"
+edit-url-template = "https://github.com/autotwin/AutoSim/edit/main/{path}"
+
+[output.html.fold]
+enable = true
+level = 0
