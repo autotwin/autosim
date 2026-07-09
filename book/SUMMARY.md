@@ -11,3 +11,4 @@
   - [CSF](materials/csf.md)
 - [Brain Fidelity](fidelity.md)
 - [Membranes](membranes.md)
+- [Configuration Reference](configuration.md)
