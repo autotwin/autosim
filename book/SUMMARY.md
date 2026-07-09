@@ -13,3 +13,7 @@
 - [Membranes](membranes.md)
 - [Configuration Reference](configuration.md)
 - [HPC](hpc.md)
+
+# Tutorials
+
+- [Run Your First Simulation](tutorials/first_simulation.md)
