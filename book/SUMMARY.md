@@ -17,3 +17,4 @@
 # Tutorials
 
 - [Run Your First Simulation](tutorials/first_simulation.md)
+- [Bring Your Own Subject Data](tutorials/own_data.md)
