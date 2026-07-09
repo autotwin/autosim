@@ -19,3 +19,6 @@
 - [Run Your First Simulation](tutorials/first_simulation.md)
 - [Bring Your Own Subject Data](tutorials/own_data.md)
 - [Bring Your Own Material Model](tutorials/custom_material.md)
+- [Add a New Material to the Catalog](tutorials/new_catalog_material.md)
+- [Keeping Autosim in Sync with Autovalidate](tutorials/sync_with_autovalidate.md)
+- [Diagnose a Failed Simulation](tutorials/diagnose.md)
